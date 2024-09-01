@@ -1,10 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import { RouterProvider } from 'react-router-dom'
+import { router } from 'Routes'
+import { StoreProvider } from 'stores/StoreProvider'
+import { MuiThemeProvider } from 'theme/MuiThemeProvider'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+	<React.StrictMode>
+		<StoreProvider>
+			<MuiThemeProvider>
+				<RouterProvider router={router} />
+			</MuiThemeProvider>
+		</StoreProvider>
+	</React.StrictMode>
 )
