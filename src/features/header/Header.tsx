@@ -1,7 +1,7 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
 import { Logo } from 'assets/Logo'
-import { Account } from './Account'
-import { Search } from './Search'
+import { Account } from './AccountIcon'
+import { Search } from './search/SearchIcon'
 import { NavLink } from 'react-router-dom'
 import { RouteOption } from 'Routes'
 
@@ -31,6 +31,7 @@ export const Header = () => {
 						fontSize: 24,
 						color: (theme) => theme.palette.text.primary,
 						textDecoration: 'none',
+						mr: 2,
 					}}
 				>
 					MangaApp
