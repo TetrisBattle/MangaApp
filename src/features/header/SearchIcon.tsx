@@ -4,20 +4,19 @@ import { useStore } from 'hooks/useStore'
 import { observer } from 'mobx-react-lite'
 
 export const Search = observer(() => {
-	const { appStore } = useStore()
+	const { searchStore } = useStore()
 
 	return (
 		<>
-			{!appStore.isSearching ? (
-				<IconButton onClick={() => appStore.setIsSearching(true)}>
+			{!searchStore.isSearching ? (
+				<IconButton onClick={() => searchStore.setIsSearching(true)}>
 					<SearchIcon />
 				</IconButton>
 			) : (
 				<TextField
-					value={appStore.search}
-					onChange={(e) => appStore.setSearch(e.target.value)}
+					value={searchStore.search}
+					onChange={(e) => searchStore.setSearch(e.target.value)}
 					autoFocus
-					onBlur={() => appStore.setIsSearching(false)}
 					slotProps={{
 						input: {
 							endAdornment: (
