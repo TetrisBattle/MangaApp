@@ -1,21 +1,19 @@
 import { makeAutoObservable, runInAction } from 'mobx'
-import { MangaDexStore } from './MangaDexStore'
-
-export type Manga = {
-	id: string
-	title: string
-	description: string
-	imageId: string
-	imageUrl: string
-}
+import { ApiStore } from './ApiStore'
+import { Manga } from './MangaStore'
 
 export class SearchStore {
 	isSearching = false
 	search = ''
-	searchResults: any[] = []
+	searchResults: Manga[] = []
 
-	constructor(private mangaDex: MangaDexStore) {
+	constructor(private apiStore: ApiStore) {
 		makeAutoObservable(this)
+	}
+
+	resetSearch = () => {
+		this.search = ''
+		this.searchResults = []
 	}
 
 	setIsSearching = (isSearching: boolean) => {
@@ -24,13 +22,12 @@ export class SearchStore {
 
 	setSearch = async (search: string) => {
 		if (!search) {
-			this.search = ''
-			this.searchResults = []
+			this.resetSearch()
 			return
 		}
 
 		this.search = search
-		const mangas = await this.mangaDex.getMangas(search)
+		const mangas = await this.apiStore.getMangasBySearch(search)
 		runInAction(() => {
 			this.searchResults = mangas
 		})

@@ -1,10 +1,10 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
 import { Logo } from 'assets/Logo'
 import { Account } from './AccountIcon'
-import { Search } from './SearchIcon'
+import { Search } from './search/SearchIcon'
 import { NavLink } from 'react-router-dom'
 import { RouteOption } from 'Routes'
-import { SearchResult } from 'features/SearchResult'
+import { SearchResults } from 'features/header/search/SearchResults'
 
 export const Header = () => {
 	return (
@@ -59,7 +59,7 @@ export const Header = () => {
 					</Box>
 				</Toolbar>
 			</AppBar>
-			<SearchResult />
+			<SearchResults />
 		</Box>
 	)
 }

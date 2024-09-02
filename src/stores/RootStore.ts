@@ -1,7 +1,9 @@
-import { MangaDexStore } from './MangaDexStore'
+import { ApiStore } from './ApiStore'
+import { MangaStore } from './MangaStore'
 import { SearchStore } from './SearchStore'
 
 export class RootStore {
-	mangaDexStore = new MangaDexStore()
-	searchStore = new SearchStore(this.mangaDexStore)
+	apiStore = new ApiStore()
+	searchStore = new SearchStore(this.apiStore)
+	mangaStore = new MangaStore(this.apiStore)
 }

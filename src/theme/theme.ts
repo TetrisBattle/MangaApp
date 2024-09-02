@@ -1,8 +1,8 @@
-import { createTheme } from '@mui/material'
+import { createTheme, ThemeOptions } from '@mui/material'
 import { defaultTheme } from './defaultTheme'
 import { deepmerge } from '@mui/utils'
 
-const customTheme = {
+const customTheme: ThemeOptions = {
 	palette: {
 		mode: 'dark',
 		primary: {
@@ -14,6 +14,9 @@ const customTheme = {
 		background: {
 			paper: '#040404',
 			default: '#000',
+		},
+		text: {
+			primary: '#dedede',
 		},
 	},
 }

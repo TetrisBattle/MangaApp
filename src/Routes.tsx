@@ -2,10 +2,12 @@ import { Navigate, createBrowserRouter } from 'react-router-dom'
 import { App } from 'App'
 import { NotFound } from 'features/NotFound'
 import { Home } from 'features/Home'
+import { Details } from 'features/details/Details'
 
 export enum RouteOption {
 	NotFound = '/404',
-	Home = '/home',
+	Home = '/',
+	Details = '/details',
 }
 
 export const router = createBrowserRouter([
@@ -18,8 +20,11 @@ export const router = createBrowserRouter([
 				path: '*',
 				element: <Navigate replace to={RouteOption.NotFound} />,
 			},
-			{ path: '/', element: <Navigate replace to={RouteOption.Home} /> },
 			{ path: RouteOption.Home, element: <Home /> },
+			{
+				path: RouteOption.Details + '/:id',
+				element: <Details />,
+			},
 		],
 	},
 ])

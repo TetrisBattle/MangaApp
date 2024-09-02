@@ -9,8 +9,10 @@ import {
 } from '@mui/material'
 import { useStore } from 'hooks/useStore'
 import { observer } from 'mobx-react-lite'
+import { NavLink } from 'react-router-dom'
+import { RouteOption } from 'Routes'
 
-export const SearchResult = observer(() => {
+export const SearchResults = observer(() => {
 	const { searchStore } = useStore()
 
 	const open = !!(searchStore.isSearching && searchStore.search)
@@ -31,29 +33,14 @@ export const SearchResult = observer(() => {
 					maxHeight: 400,
 					flexShrink: 0,
 					overflowY: 'scroll',
-
-					'::-webkit-scrollbar': {
-						width: 8,
-					},
-
-					'::-webkit-scrollbar-track': {
-						boxShadow: 'inset 0 0 5px grey',
-						borderRadius: 10,
-					},
-
-					'::-webkit-scrollbar-thumb': {
-						background: (theme) => theme.palette.primary.main,
-						borderRadius: 10,
-					},
-
-					'::-webkit-scrollbar-thumb:hover': {
-						background: (theme) => theme.palette.primary.dark,
-					},
 				}}
 			>
-				{searchStore.searchResults.map((searchResult: any) => (
+				{searchStore.searchResults.map((searchResult) => (
 					<Card key={searchResult.id} sx={{ flexShrink: 0 }}>
 						<CardActionArea
+							component={NavLink}
+							to={`${RouteOption.Details}/${searchResult.id}`}
+							onClick={() => searchStore.resetSearch()}
 							sx={{
 								display: 'flex',
 								justifyContent: 'left',
@@ -67,12 +54,6 @@ export const SearchResult = observer(() => {
 							/>
 							<CardContent>
 								<Typography>{searchResult.title}</Typography>
-								{/* <Typography
-									variant='body2'
-									sx={{ color: 'text.secondary' }}
-								>
-									{searchResult.description}
-								</Typography> */}
 							</CardContent>
 						</CardActionArea>
 					</Card>
