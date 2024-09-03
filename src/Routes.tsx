@@ -3,7 +3,7 @@ import { App } from 'App'
 import { NotFound } from 'features/NotFound'
 import { Home } from 'features/Home'
 import { Details } from 'features/details/Details'
-import { Chapter } from 'features/Chapter'
+import { Chapter } from 'features/chapter/Chapter'
 
 export enum RouteOption {
 	NotFound = '/404',

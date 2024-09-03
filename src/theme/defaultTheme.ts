@@ -37,11 +37,6 @@ export const defaultTheme: ThemeOptions = {
 				fullWidth: true,
 			},
 		},
-		MuiAppBar: {
-			defaultProps: {
-				position: 'static',
-			},
-		},
 		MuiToolbar: {
 			defaultProps: {
 				disableGutters: true,

@@ -12,7 +12,7 @@ import { NavLink } from 'react-router-dom'
 import { RouteOption } from 'Routes'
 
 export const DetailsChapterNav = observer(() => {
-	const { mangaStore } = useStore()
+	const { mangaStore, chapterStore } = useStore()
 
 	return (
 		<Card>
@@ -44,7 +44,7 @@ export const DetailsChapterNav = observer(() => {
 					<Button>Chapter 1</Button>
 					<Button
 						component={NavLink}
-						to={`${RouteOption.Chapter}/${mangaStore.selectedChapter.id}`}
+						to={`${RouteOption.Chapter}/${chapterStore.selectedChapter.id}`}
 					>
 						Chapter {mangaStore.selectedManga.chapters}
 					</Button>

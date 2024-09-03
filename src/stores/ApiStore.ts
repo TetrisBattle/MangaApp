@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { makeAutoObservable } from 'mobx'
-import { Chapter, Manga } from './MangaStore'
+import { Manga } from './MangaStore'
 import { MangaDto } from 'types/MangaDto'
 import { ImageDto } from 'types/ImageDto'
+import { Chapter } from './ChapterStore'
 import { ChapterDto } from 'types/ChapterDto'
 import { ChapterImageDto } from 'types/ChapterImageDto'
 
