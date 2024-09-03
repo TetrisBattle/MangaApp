@@ -5,12 +5,13 @@ import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { DetailsImage } from './DetailsImage'
 import { DetailsMain } from './DetailsMain'
-import { DetailsChapters } from './DetailsChapters'
+import { DetailsChapterNav } from './DetailsChapterNav'
 import { DetailsInfo } from './DetailsInfo'
 
 export const Details = observer(() => {
 	const { id: mangaId } = useParams()
 	if (!mangaId) throw new Error('Id not found!')
+
 	const { mangaStore } = useStore()
 
 	useEffect(() => {
@@ -22,7 +23,7 @@ export const Details = observer(() => {
 			<DetailsImage />
 			<Stack sx={{ gap: 3, px: 2 }}>
 				<DetailsMain />
-				<DetailsChapters />
+				<DetailsChapterNav />
 				<DetailsInfo />
 			</Stack>
 		</Box>

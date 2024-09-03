@@ -1,21 +1,23 @@
 import axios from 'axios'
 import { makeAutoObservable } from 'mobx'
-import { Manga } from './MangaStore'
+import { Chapter, Manga } from './MangaStore'
 import { MangaDto } from 'types/MangaDto'
 import { ImageDto } from 'types/ImageDto'
+import { ChapterDto } from 'types/ChapterDto'
+import { ChapterImageDto } from 'types/ChapterImageDto'
 
 export class ApiStore {
 	baseUrl = 'https://api.mangadex.org'
-	imagesUrl = 'https://uploads.mangadex.org/covers'
+	coversUrl = 'https://uploads.mangadex.org/covers'
 
 	constructor() {
 		makeAutoObservable(this)
 	}
 
-	getMangaById = async (id: string): Promise<Manga> => {
+	getManga = async (mangaId: string): Promise<Manga> => {
 		const mangaRes = await axios({
 			method: 'GET',
-			url: `${this.baseUrl}/manga/${id}`,
+			url: `${this.baseUrl}/manga/${mangaId}`,
 		})
 		const mangaDto: MangaDto = mangaRes.data.data
 		const manga = this.convertFromMangaDto(mangaDto)
@@ -26,39 +28,100 @@ export class ApiStore {
 		})
 		const imageDto: ImageDto = imageRes.data.data
 		manga.setImageUrl(
-			`${this.imagesUrl}/${manga.id}/${imageDto.attributes.fileName}`
+			`${this.coversUrl}/${manga.id}/${imageDto.attributes.fileName}`
 		)
 
 		return manga
 	}
 
-	getMangasBySearch = async (title: string): Promise<Manga[]> => {
+	getSearchResult = async (title: string): Promise<Manga[]> => {
 		const searchRes = await axios({
 			method: 'GET',
 			url: `${this.baseUrl}/manga`,
-			params: { title: title },
+			params: {
+				title: title,
+				order: { latestUploadedChapter: 'desc' },
+				includes: ['manga'],
+				availableTranslatedLanguage: ['en'],
+				hasAvailableChapters: true,
+			},
 		})
-		const mangaDtoDatas: MangaDto[] = searchRes.data.data.map(
-			(data: MangaDto[]) => data
-		)
-		const mangas: Manga[] = mangaDtoDatas.map((mangaDto) => {
+		const mangaDtos: MangaDto[] = searchRes.data.data
+		const mangas: Manga[] = mangaDtos.map((mangaDto) => {
 			return this.convertFromMangaDto(mangaDto)
 		})
 
-		const imageResponses = await axios({
+		const imageRes = await axios({
 			method: 'GET',
 			url: `${this.baseUrl}/cover`,
 			params: { ids: mangas.map((manga) => manga.imageId) },
 		})
-		imageResponses.data.data.forEach((imageDto: ImageDto) => {
+		imageRes.data.data.forEach((imageDto: ImageDto) => {
 			const manga = mangas.find((manga) => manga.imageId === imageDto.id)
 			if (!manga) return
 			manga.setImageUrl(
-				`https://uploads.mangadex.org/covers/${manga.id}/${imageDto.attributes.fileName}`
+				`${this.coversUrl}/${manga.id}/${imageDto.attributes.fileName}`
 			)
 		})
 
 		return mangas
+	}
+
+	getChapter = async (mangaId: string, chapterNumber: string) => {
+		const chapterRes = await axios({
+			method: 'GET',
+			url: `${this.baseUrl}/chapter`,
+			params: {
+				manga: mangaId,
+				limit: 1,
+				chapter: chapterNumber,
+				translatedLanguage: ['en'],
+				includes: ['manga'],
+				order: {
+					createdAt: 'asc',
+					updatedAt: 'asc',
+					publishAt: 'asc',
+					readableAt: 'asc',
+					volume: 'asc',
+					chapter: 'asc',
+				},
+			},
+		})
+
+		const chapterDto: ChapterDto = chapterRes.data.data[0]
+
+		const chapter = new Chapter(
+			chapterDto.id,
+			chapterDto.attributes.chapter,
+			chapterDto.attributes.pages,
+			chapterDto.attributes.publishAt,
+			chapterDto.attributes.readableAt,
+			chapterDto.attributes.createdAt,
+			chapterDto.attributes.updatedAt
+		)
+
+		return chapter
+	}
+
+	getChapterImages = async (chapterId: string) => {
+		const chapterImageRes = await axios({
+			method: 'GET',
+			url: `${this.baseUrl}/at-home/server/${chapterId}`,
+		})
+
+		const chapterImageDtos: ChapterImageDto = chapterImageRes.data
+
+		const chapterImageData = {
+			host: chapterImageDtos.baseUrl,
+			hash: chapterImageDtos.chapter.hash,
+			data: chapterImageDtos.chapter.data,
+		}
+
+		const chapterImages = chapterImageData.data.map((image) => {
+			return `${chapterImageData.host}/data/${chapterImageData.hash}/${image}`
+		})
+
+		return chapterImages
 	}
 
 	convertFromMangaDto = (mangaDto: MangaDto) => {

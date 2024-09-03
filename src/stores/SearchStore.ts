@@ -27,7 +27,7 @@ export class SearchStore {
 		}
 
 		this.search = search
-		const mangas = await this.apiStore.getMangasBySearch(search)
+		const mangas = await this.apiStore.getSearchResult(search)
 		runInAction(() => {
 			this.searchResults = mangas
 		})

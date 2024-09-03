@@ -23,6 +23,7 @@ export const SearchResults = observer(() => {
 			<Stack
 				sx={{
 					px: 2,
+					pb: 2,
 					mx: 5,
 					bgcolor: '#171717',
 					gap: 1,

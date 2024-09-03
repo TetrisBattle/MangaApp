@@ -8,8 +8,10 @@ import {
 } from '@mui/material'
 import { useStore } from 'hooks/useStore'
 import { observer } from 'mobx-react-lite'
+import { NavLink } from 'react-router-dom'
+import { RouteOption } from 'Routes'
 
-export const DetailsChapters = observer(() => {
+export const DetailsChapterNav = observer(() => {
 	const { mangaStore } = useStore()
 
 	return (
@@ -40,7 +42,12 @@ export const DetailsChapters = observer(() => {
 					}}
 				>
 					<Button>Chapter 1</Button>
-					<Button>Chapter {mangaStore.selectedManga.chapters}</Button>
+					<Button
+						component={NavLink}
+						to={`${RouteOption.Chapter}/${mangaStore.selectedChapter.id}`}
+					>
+						Chapter {mangaStore.selectedManga.chapters}
+					</Button>
 				</Box>
 			</CardContent>
 		</Card>

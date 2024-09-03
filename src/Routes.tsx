@@ -3,11 +3,13 @@ import { App } from 'App'
 import { NotFound } from 'features/NotFound'
 import { Home } from 'features/Home'
 import { Details } from 'features/details/Details'
+import { Chapter } from 'features/Chapter'
 
 export enum RouteOption {
 	NotFound = '/404',
 	Home = '/',
 	Details = '/details',
+	Chapter = '/chapter',
 }
 
 export const router = createBrowserRouter([
@@ -24,6 +26,10 @@ export const router = createBrowserRouter([
 			{
 				path: RouteOption.Details + '/:id',
 				element: <Details />,
+			},
+			{
+				path: RouteOption.Chapter + '/:id',
+				element: <Chapter />,
 			},
 		],
 	},
