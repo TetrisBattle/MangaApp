@@ -5,11 +5,11 @@ import {
 	CardContent,
 	Typography,
 } from '@mui/material'
-import { useStore } from 'hooks/useStore'
+import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
-export const DetailsMain = observer(() => {
+export const MangaMain = observer(() => {
 	const { mangaStore } = useStore()
 	const [showDescription, setShowDescription] = useState(false)
 
@@ -39,7 +39,7 @@ export const DetailsMain = observer(() => {
 								mb: 1,
 							}}
 						>
-							{mangaStore.selectedManga.title}
+							{mangaStore.manga.title}
 						</Typography>
 
 						<Typography
@@ -48,7 +48,7 @@ export const DetailsMain = observer(() => {
 								color: (theme) => theme.palette.text.secondary,
 							}}
 						>
-							{mangaStore.selectedManga.description}
+							{mangaStore.manga.description}
 						</Typography>
 					</Box>
 				</CardContent>

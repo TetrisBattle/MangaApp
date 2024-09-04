@@ -1,6 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search'
 import { IconButton, InputAdornment, TextField } from '@mui/material'
-import { useStore } from 'hooks/useStore'
+import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
 
 export const Search = observer(() => {

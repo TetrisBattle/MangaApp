@@ -1,8 +1,8 @@
 import { Card, CardContent, Stack, Typography } from '@mui/material'
-import { useStore } from 'hooks/useStore'
+import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
 
-export const DetailsInfo = observer(() => {
+export const MangaInfo = observer(() => {
 	const { mangaStore } = useStore()
 
 	const convertDate = (dateString: string) => {
@@ -27,19 +27,17 @@ export const DetailsInfo = observer(() => {
 
 				<Stack gap={1}>
 					<Typography>
-						Chapters: {mangaStore.selectedManga.chapters}
+						Chapters: {mangaStore.manga.chapters}
 					</Typography>
 
-					<Typography>
-						Status: {mangaStore.selectedManga.status}
-					</Typography>
+					<Typography>Status: {mangaStore.manga.status}</Typography>
 
 					<Typography>
 						Tags:{' '}
-						{mangaStore.selectedManga.tags.map((tag: string, i) => {
+						{mangaStore.manga.tags.map((tag: string, i) => {
 							return (
 								<Typography
-									key={'details-' + i}
+									key={'manga-tag-' + i}
 									component='span'
 									sx={{
 										width: 'max-content !important',
@@ -49,9 +47,7 @@ export const DetailsInfo = observer(() => {
 									<Typography component='span'>
 										{tag}
 									</Typography>
-									{i <
-										mangaStore.selectedManga!.tags.length -
-											1 && (
+									{i < mangaStore.manga!.tags.length - 1 && (
 										<Typography component='span'>
 											,{'\xa0'}
 										</Typography>
@@ -62,11 +58,11 @@ export const DetailsInfo = observer(() => {
 					</Typography>
 
 					<Typography>
-						Created: {convertDate(mangaStore.selectedManga.created)}
+						Created: {convertDate(mangaStore.manga.created)}
 					</Typography>
 
 					<Typography>
-						Updated: {convertDate(mangaStore.selectedManga.updated)}
+						Updated: {convertDate(mangaStore.manga.updated)}
 					</Typography>
 				</Stack>
 			</CardContent>

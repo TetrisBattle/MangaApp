@@ -1,6 +1,4 @@
-import { Box, Button, Typography } from '@mui/material'
-import { RouteOption } from 'Routes'
-import { Link } from 'react-router-dom'
+import { Box, Typography } from '@mui/material'
 
 export const NotFound = () => {
 	return (
@@ -14,10 +12,14 @@ export const NotFound = () => {
 				mt: 3,
 			}}
 		>
-			<Typography variant='h1'>Error 404!</Typography>
-			<Button component={Link} to={RouteOption.Home}>
-				Return to home page
-			</Button>
+			<Typography
+				variant='h1'
+				sx={{
+					fontWeight: (theme) => theme.typography.fontWeightMedium,
+				}}
+			>
+				Error 404!
+			</Typography>
 		</Box>
 	)
 }

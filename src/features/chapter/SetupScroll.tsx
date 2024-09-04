@@ -1,5 +1,5 @@
-import { useScrollListener } from 'hooks/useSetupScroll'
-import { useStore } from 'hooks/useStore'
+import { useScrollListener } from './useScrollListener'
+import { useStore } from 'store/useStore'
 import { useEffect } from 'react'
 
 export const SetupScroll = () => {

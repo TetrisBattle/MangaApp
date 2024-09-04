@@ -1,35 +1,28 @@
-import { Navigate, createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { App } from 'App'
 import { NotFound } from 'features/NotFound'
 import { Home } from 'features/Home'
-import { Details } from 'features/details/Details'
-import { Chapter } from 'features/chapter/Chapter'
-
-export enum RouteOption {
-	NotFound = '/404',
-	Home = '/',
-	Details = '/details',
-	Chapter = '/chapter',
-}
+import { MangaPage } from 'features/manga/MangaPage'
+import { ChapterPage } from 'features/chapter/ChapterPage'
 
 export const router = createBrowserRouter([
 	{
 		path: '/',
 		element: <App />,
 		children: [
-			{ path: RouteOption.NotFound, element: <NotFound /> },
+			{ path: '/404', element: <NotFound /> },
 			{
 				path: '*',
-				element: <Navigate replace to={RouteOption.NotFound} />,
+				element: <Navigate replace to='/404' />,
 			},
-			{ path: RouteOption.Home, element: <Home /> },
+			{ path: '/', element: <Home /> },
 			{
-				path: RouteOption.Details + '/:id',
-				element: <Details />,
+				path: '/manga/:mangaId',
+				element: <MangaPage />,
 			},
 			{
-				path: RouteOption.Chapter + '/:id',
-				element: <Chapter />,
+				path: '/manga/:mangaId/chapter/:chapterId',
+				element: <ChapterPage />,
 			},
 		],
 	},

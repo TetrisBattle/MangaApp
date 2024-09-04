@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { RootStore } from 'stores/RootStore'
+import { RootStore } from 'store/RootStore'
 
 type StoreContextProviderProps = {
 	children: React.ReactNode

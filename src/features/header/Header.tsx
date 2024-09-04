@@ -1,11 +1,10 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
 import { Logo } from 'assets/Logo'
 import { Account } from './AccountIcon'
-import { Search } from './search/SearchIcon'
+import { Search } from './SearchIcon'
 import { NavLink } from 'react-router-dom'
-import { RouteOption } from 'Routes'
-import { SearchResults } from './search/SearchResults'
-import { useStore } from 'hooks/useStore'
+import { SearchResults } from './SearchResults'
+import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
 
 export const Header = observer(() => {
@@ -27,7 +26,7 @@ export const Header = observer(() => {
 					<Button
 						variant='text'
 						component={NavLink}
-						to={RouteOption.Home}
+						to='/'
 						disableFocusRipple
 						disableRipple
 						sx={{
@@ -41,7 +40,7 @@ export const Header = observer(() => {
 					<Typography
 						variant='h1'
 						component={NavLink}
-						to={RouteOption.Home}
+						to='/'
 						sx={{
 							fontSize: 24,
 							fontWeight: (theme) =>

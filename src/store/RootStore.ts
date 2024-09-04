@@ -1,8 +1,8 @@
 import { ApiStore } from './ApiStore'
 import { AppStore } from './AppStore'
-import { ChapterStore } from './ChapterStore'
-import { MangaStore } from './MangaStore'
-import { SearchStore } from './SearchStore'
+import { SearchStore } from 'features/header/SearchStore'
+import { MangaStore } from '../features/manga/MangaStore'
+import { ChapterStore } from '../features/chapter/ChapterStore'
 
 export class RootStore {
 	apiStore = new ApiStore()

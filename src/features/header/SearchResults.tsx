@@ -7,10 +7,9 @@ import {
 	Stack,
 	Typography,
 } from '@mui/material'
-import { useStore } from 'hooks/useStore'
+import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
 import { NavLink } from 'react-router-dom'
-import { RouteOption } from 'Routes'
 
 export const SearchResults = observer(() => {
 	const { searchStore } = useStore()
@@ -36,11 +35,11 @@ export const SearchResults = observer(() => {
 					overflowY: 'scroll',
 				}}
 			>
-				{searchStore.searchResults.map((searchResult) => (
-					<Card key={searchResult.id} sx={{ flexShrink: 0 }}>
+				{searchStore.searchResults.map((manga) => (
+					<Card key={manga.id} sx={{ flexShrink: 0 }}>
 						<CardActionArea
 							component={NavLink}
-							to={`${RouteOption.Details}/${searchResult.id}`}
+							to={`/manga/${manga.id}`}
 							onClick={() => searchStore.resetSearch()}
 							sx={{
 								display: 'flex',
@@ -49,12 +48,12 @@ export const SearchResults = observer(() => {
 						>
 							<CardMedia
 								component='img'
-								src={searchResult.imageUrl}
+								src={manga.imageUrl}
 								alt='image'
 								sx={{ width: 'auto', height: 50, px: 1 }}
 							/>
 							<CardContent>
-								<Typography>{searchResult.title}</Typography>
+								<Typography>{manga.title}</Typography>
 							</CardContent>
 						</CardActionArea>
 					</Card>

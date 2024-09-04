@@ -1,6 +1,6 @@
+import { Manga } from 'features/manga/MangaModel'
 import { makeAutoObservable, runInAction } from 'mobx'
-import { ApiStore } from './ApiStore'
-import { Manga } from './MangaStore'
+import { ApiStore } from 'store/ApiStore'
 
 export class SearchStore {
 	isSearching = false
