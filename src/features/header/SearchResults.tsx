@@ -14,7 +14,7 @@ import { NavLink } from 'react-router-dom'
 export const SearchResults = observer(() => {
 	const { searchStore } = useStore()
 
-	const open = !!(searchStore.isSearching && searchStore.search)
+	const open = !!(searchStore.isSearching && searchStore.title)
 	if (!open) return <></>
 
 	return (
@@ -40,7 +40,7 @@ export const SearchResults = observer(() => {
 						<CardActionArea
 							component={NavLink}
 							to={`/manga/${manga.id}`}
-							onClick={() => searchStore.resetSearch()}
+							onClick={() => searchStore.reset()}
 							sx={{
 								display: 'flex',
 								justifyContent: 'left',
@@ -61,11 +61,8 @@ export const SearchResults = observer(() => {
 			</Stack>
 
 			<Backdrop
-				sx={{ zIndex: (theme) => theme.zIndex.appBar - 1 }}
 				open={open}
-				onClick={() => {
-					searchStore.setIsSearching(false)
-				}}
+				sx={{ zIndex: (theme) => theme.zIndex.appBar - 1 }}
 			/>
 		</>
 	)

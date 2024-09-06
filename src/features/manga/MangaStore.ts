@@ -13,8 +13,13 @@ export class MangaStore {
 		this.manga = manga
 	}
 
-	getManga = async (mangaId: string) => {
-		const manga = await this.apiStore.getManga(mangaId)
+	getManga = async (mangaId: string): Promise<Manga> => {
+		const mangaDto = await this.apiStore.getMangaDto(mangaId)
+		const manga = Manga.convertFromDto(mangaDto)
+		const coverUrl = await this.apiStore.getCoverUrl(manga)
+
+		manga.setImageUrl(coverUrl)
+
 		return manga
 	}
 }

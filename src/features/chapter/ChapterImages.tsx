@@ -19,7 +19,7 @@ export const ChapterImages = observer(() => {
 					mx: 'auto',
 				}}
 			>
-				{chapterStore.chapterImages.map((image) => (
+				{chapterStore.chapterImageUrls.map((image) => (
 					<img key={image} src={image} alt='image' />
 				))}
 			</Stack>

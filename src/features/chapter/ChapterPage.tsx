@@ -25,10 +25,10 @@ export const ChapterPage = observer(() => {
 				chapterStore.setChapter(chapter)
 			}
 
-			if (chapterStore.chapterImages.length === 0) {
+			if (chapterStore.chapterImageUrls.length === 0) {
 				const chapterImages =
-					await chapterStore.getChapterImages(chapterId)
-				chapterStore.setChapterImages(chapterImages)
+					await chapterStore.getChapterImageUrls(chapterId)
+				chapterStore.setChapterImageUrls(chapterImages)
 			}
 		}
 		onLoad(mangaId, chapterId)

@@ -11,6 +11,7 @@ import { observer } from 'mobx-react-lite'
 import { NavLink } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Chapter } from 'features/chapter/ChapterModel'
+import { Manga } from './MangaModel'
 
 export const MangaChapterNav = observer(() => {
 	const { mangaStore, chapterStore } = useStore()
@@ -18,16 +19,16 @@ export const MangaChapterNav = observer(() => {
 	const [lastChapter, setLastChapter] = useState(new Chapter())
 
 	useEffect(() => {
-		const onLoad = async (mangaId: string) => {
-			const firstChapter = await chapterStore.getFirstChapter(mangaId)
+		const onLoad = async (manga: Manga) => {
+			const firstChapter = await chapterStore.getFirstChapter(manga)
 			setFirstChapter(firstChapter)
 
-			const lastChapter = await chapterStore.getLastChapter(mangaId)
+			const lastChapter = await chapterStore.getLastChapter(manga)
 			setLastChapter(lastChapter)
 		}
 
-		if (mangaStore.manga.id) onLoad(mangaStore.manga.id)
-	}, [chapterStore, mangaStore.manga.id])
+		if (mangaStore.manga.id) onLoad(mangaStore.manga)
+	}, [chapterStore, mangaStore.manga])
 
 	return (
 		<Card>

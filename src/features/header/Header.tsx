@@ -22,7 +22,7 @@ export const Header = observer(() => {
 					bottom: 'auto',
 				}}
 			>
-				<Toolbar sx={{ height: 64, pr: 1 }}>
+				<Toolbar sx={{ height: appStore.headerHeight, pr: 1 }}>
 					<Button
 						variant='text'
 						component={NavLink}

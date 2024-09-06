@@ -14,18 +14,6 @@ export class Chapter {
 		makeAutoObservable(this)
 	}
 
-	copy = () => {
-		return new Chapter(
-			this.id,
-			this.chapter,
-			this.pages,
-			this.published,
-			this.readable,
-			this.created,
-			this.updated
-		)
-	}
-
 	static convertFromDto = (chapterDto: ChapterDto) => {
 		return new Chapter(
 			chapterDto.id,

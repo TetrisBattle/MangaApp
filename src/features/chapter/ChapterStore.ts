@@ -2,12 +2,14 @@ import { makeAutoObservable } from 'mobx'
 import { AppStore } from '../../store/AppStore'
 import { ApiStore } from '../../store/ApiStore'
 import { Chapter } from './ChapterModel'
+import { Manga } from 'features/manga/MangaModel'
+import { ChapterImages } from './ChapterImagesModel'
 
 type ScrollPos = 'top' | 'bottom' | 'middle'
 
 export class ChapterStore {
 	chapter = new Chapter()
-	chapterImages: string[] = []
+	chapterImageUrls: string[] = []
 	scrollPos: ScrollPos = 'top'
 
 	constructor(
@@ -21,8 +23,8 @@ export class ChapterStore {
 		this.chapter = chapter
 	}
 
-	setChapterImages = (chapterImages: string[]) => {
-		this.chapterImages = chapterImages
+	setChapterImageUrls = (chapterImageUrls: string[]) => {
+		this.chapterImageUrls = chapterImageUrls
 	}
 
 	setScrollPos = (scrollPos: ScrollPos) => {
@@ -34,30 +36,41 @@ export class ChapterStore {
 	}
 
 	getChapter = async (chapterId: string) => {
-		const chapter = await this.apiStore.getChapter(chapterId)
-		return chapter
+		const chapterDto = await this.apiStore.getChapterDto(chapterId)
+		return Chapter.convertFromDto(chapterDto)
 	}
 
 	getChapterByNumber = async (mangaId: string, chapterNumber: string) => {
-		const chapter = await this.apiStore.getChapterByNumber(
+		const chapterDto = await this.apiStore.getChapterDtoByNumber(
 			mangaId,
 			chapterNumber
 		)
-		return chapter
+		return Chapter.convertFromDto(chapterDto)
 	}
 
-	getFirstChapter = async (mangaId: string) => {
-		const chapter = await this.apiStore.getFirstChapter(mangaId)
-		return chapter
+	getFirstChapter = async (manga: Manga) => {
+		const chapterDtos = await this.apiStore.getChapterDtos(manga, {
+			order: 'asc',
+		})
+		return Chapter.convertFromDto(chapterDtos[0])
 	}
 
-	getLastChapter = async (mangaId: string) => {
-		const chapter = await this.apiStore.getLastChapter(mangaId)
-		return chapter
+	getLastChapter = async (manga: Manga) => {
+		const chapterDtos = await this.apiStore.getChapterDtos(manga, {
+			order: 'desc',
+		})
+		return Chapter.convertFromDto(chapterDtos[0])
 	}
 
-	getChapterImages = async (chapterId: string) => {
-		const chapterImages = await this.apiStore.getChapterImages(chapterId)
-		return chapterImages
+	getChapterImageUrls = async (chapterId: string) => {
+		const chapterImagesDtos =
+			await this.apiStore.getChapterImageDtos(chapterId)
+
+		const chapterImages = ChapterImages.convertFromDto(chapterImagesDtos)
+
+		return chapterImages.data.map(
+			(image) =>
+				`${chapterImages.host}/data/${chapterImages.hash}/${image}`
+		)
 	}
 }

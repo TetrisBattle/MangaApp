@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx'
 
 export class AppStore {
 	showHeader = true
+	headerHeight = 64
 
 	constructor() {
 		makeAutoObservable(this)
