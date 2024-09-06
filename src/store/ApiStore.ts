@@ -63,48 +63,16 @@ export class ApiStore {
 		return await axios({
 			method: 'GET',
 			url: `${this.baseUrl}/cover`,
-			params: { ids: mangas.map((manga) => manga.imageId) },
+			params: { ids: mangas.map((manga) => manga.coverId) },
 		})
 	}
 
 	getCoverUrl = async (manga: Manga): Promise<string> => {
 		const coverDto: CoverDto = await axios({
 			method: 'GET',
-			url: `${this.baseUrl}/cover/${manga.imageId}`,
+			url: `${this.baseUrl}/cover/${manga.coverId}`,
 		}).then((res) => res.data.data)
 		return `${this.coversUrl}/${manga.id}/${coverDto.attributes.fileName}`
-	}
-
-	getChapterDto = async (chapterId: string): Promise<ChapterDto> => {
-		return await axios({
-			method: 'GET',
-			url: `${this.baseUrl}/chapter/${chapterId}`,
-		}).then((res) => res.data.data)
-	}
-
-	getChapterDtoByNumber = async (mangaId: string, chapterNumber: string) => {
-		const chapterDtos: ChapterDto[] = await axios({
-			method: 'GET',
-			url: `${this.baseUrl}/chapter`,
-			params: {
-				manga: mangaId,
-				chapter: chapterNumber,
-				translatedLanguage: ['en'],
-				includes: ['manga'],
-				order: {
-					chapter: 'asc',
-					volume: 'desc',
-					readableAt: 'desc',
-					publishAt: 'desc',
-					updatedAt: 'desc',
-					createdAt: 'desc',
-				},
-			},
-		}).then((res) => res.data.data)
-
-		const chapterDto = this.filterChapters(chapterDtos)[0]
-
-		return chapterDto
 	}
 
 	getChapterDtos = async (
@@ -140,13 +108,14 @@ export class ApiStore {
 
 		const hasAllChapters =
 			chapterDtos[chapterDtos.length - 1].attributes.chapter ===
-			manga.chapters
+			manga.lastChapter.toString()
 
 		if (!hasAllChapters) {
 			const moreChapterDtos = await this.getChapterDtos(manga, {
 				limit: limit,
 				offset: offset + 100,
 			})
+
 			chapterDtos.push(...moreChapterDtos)
 		}
 

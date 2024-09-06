@@ -9,26 +9,15 @@ import {
 import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
 import { NavLink } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { Chapter } from 'features/chapter/ChapterModel'
-import { Manga } from './MangaModel'
 
 export const MangaChapterNav = observer(() => {
-	const { mangaStore, chapterStore } = useStore()
-	const [firstChapter, setFirstChapter] = useState(new Chapter())
-	const [lastChapter, setLastChapter] = useState(new Chapter())
+	const { mangaStore } = useStore()
 
-	useEffect(() => {
-		const onLoad = async (manga: Manga) => {
-			const firstChapter = await chapterStore.getFirstChapter(manga)
-			setFirstChapter(firstChapter)
+	if (mangaStore.manga.chapters.length === 0) return <></>
 
-			const lastChapter = await chapterStore.getLastChapter(manga)
-			setLastChapter(lastChapter)
-		}
-
-		if (mangaStore.manga.id) onLoad(mangaStore.manga)
-	}, [chapterStore, mangaStore.manga])
+	const firstChapter = mangaStore.manga.chapters[0]
+	const lastChapter =
+		mangaStore.manga.chapters[mangaStore.manga.chapters.length - 1]
 
 	return (
 		<Card>
@@ -53,7 +42,7 @@ export const MangaChapterNav = observer(() => {
 						'.MuiButton-root': {
 							width: 1,
 							fontSize: 32,
-							py: 3,
+							py: 2,
 						},
 					}}
 				>
@@ -61,13 +50,13 @@ export const MangaChapterNav = observer(() => {
 						component={NavLink}
 						to={`chapter/${firstChapter.id}`}
 					>
-						Chapter {firstChapter.chapter}
+						Chapter {firstChapter.number}
 					</Button>
 					<Button
 						component={NavLink}
 						to={`chapter/${lastChapter.id}`}
 					>
-						Chapter {lastChapter.chapter}
+						Chapter {lastChapter.number}
 					</Button>
 				</Box>
 			</CardContent>

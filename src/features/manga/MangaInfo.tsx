@@ -27,7 +27,7 @@ export const MangaInfo = observer(() => {
 
 				<Stack gap={1}>
 					<Typography>
-						Chapters: {mangaStore.manga.chapters}
+						Chapters: {mangaStore.manga.lastChapter}
 					</Typography>
 
 					<Typography>Status: {mangaStore.manga.status}</Typography>

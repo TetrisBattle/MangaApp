@@ -3,12 +3,12 @@ import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
 
 export const ChapterImages = observer(() => {
-	const { appStore, chapterStore } = useStore()
+	const { appStore, mangaStore } = useStore()
 
 	return (
 		<Box
 			onClick={() => {
-				if (chapterStore.scrollPos === 'middle') {
+				if (appStore.scrollPos === 'middle') {
 					appStore.toggleShowHeader()
 				}
 			}}
@@ -19,7 +19,7 @@ export const ChapterImages = observer(() => {
 					mx: 'auto',
 				}}
 			>
-				{chapterStore.chapterImageUrls.map((image) => (
+				{mangaStore.manga.chapter.imageUrls.map((image) => (
 					<img key={image} src={image} alt='image' />
 				))}
 			</Stack>

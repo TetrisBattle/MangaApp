@@ -48,7 +48,7 @@ export const SearchResults = observer(() => {
 						>
 							<CardMedia
 								component='img'
-								src={manga.imageUrl}
+								src={manga.coverUrl}
 								alt='image'
 								sx={{ width: 'auto', height: 50, px: 1 }}
 							/>

@@ -1,14 +1,18 @@
 import { makeAutoObservable } from 'mobx'
 import { MangaDto } from './MangaDto'
+import { Chapter } from 'features/chapter/ChapterModel'
 
 export class Manga {
+	chapter = new Chapter()
+	chapters: Chapter[] = []
+	coverUrl = ''
+
 	constructor(
 		public id = '',
 		public title = '',
 		public description = '',
-		public imageId = '',
-		public imageUrl = '',
-		public chapters = '',
+		public coverId = '',
+		public lastChapter = '',
 		public status = '',
 		public tags: string[] = [],
 		public created = '',
@@ -17,20 +21,27 @@ export class Manga {
 		makeAutoObservable(this)
 	}
 
-	setImageUrl = (imageUrl: string) => {
-		this.imageUrl = imageUrl
+	setChapter = (chapter: Chapter) => {
+		this.chapter = chapter
+	}
+
+	setChapters = (chapters: Chapter[]) => {
+		this.chapters = chapters
+	}
+
+	setCoverUrl = (coverUrl: string) => {
+		this.coverUrl = coverUrl
 	}
 
 	static convertFromDto = (mangaDto: MangaDto) => {
-		const imageId =
+		const coverId =
 			mangaDto.relationships.find((r) => r.type === 'cover_art')?.id || ''
 
 		return new Manga(
 			mangaDto.id,
 			mangaDto.attributes.title.en,
 			mangaDto.attributes.description.en,
-			imageId,
-			'',
+			coverId,
 			mangaDto.attributes.lastChapter,
 			mangaDto.attributes.status,
 			mangaDto.attributes.tags.map((tag) => tag.attributes.name.en),

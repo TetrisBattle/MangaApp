@@ -2,9 +2,11 @@ import { makeAutoObservable } from 'mobx'
 import { ChapterDto } from './ChapterDto'
 
 export class Chapter {
+	imageUrls: string[] = []
+
 	constructor(
 		public id = '',
-		public chapter = '',
+		public number = 0,
 		public pages = 0,
 		public published = '',
 		public readable = '',
@@ -14,10 +16,18 @@ export class Chapter {
 		makeAutoObservable(this)
 	}
 
+	setNumber = (number: number) => {
+		this.number = number
+	}
+
+	setImageUrls = (imageUrls: string[]) => {
+		this.imageUrls = imageUrls
+	}
+
 	static convertFromDto = (chapterDto: ChapterDto) => {
 		return new Chapter(
 			chapterDto.id,
-			chapterDto.attributes.chapter,
+			Number(chapterDto.attributes.chapter),
 			chapterDto.attributes.pages,
 			chapterDto.attributes.publishAt,
 			chapterDto.attributes.readableAt,

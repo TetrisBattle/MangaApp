@@ -36,7 +36,7 @@ export class SearchStore {
 
 		mangas.forEach(async (manga) => {
 			const coverUrl = await this.apiStore.getCoverUrl(manga)
-			manga.setImageUrl(coverUrl)
+			manga.setCoverUrl(coverUrl)
 		})
 
 		runInAction(() => {
