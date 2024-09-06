@@ -6,7 +6,7 @@ export class Chapter {
 
 	constructor(
 		public id = '',
-		public number = 0,
+		public number = '',
 		public pages = 0,
 		public published = '',
 		public readable = '',
@@ -16,7 +16,7 @@ export class Chapter {
 		makeAutoObservable(this)
 	}
 
-	setNumber = (number: number) => {
+	setNumber = (number: string) => {
 		this.number = number
 	}
 
@@ -27,7 +27,7 @@ export class Chapter {
 	static convertFromDto = (chapterDto: ChapterDto) => {
 		return new Chapter(
 			chapterDto.id,
-			Number(chapterDto.attributes.chapter),
+			chapterDto.attributes.chapter,
 			chapterDto.attributes.pages,
 			chapterDto.attributes.publishAt,
 			chapterDto.attributes.readableAt,

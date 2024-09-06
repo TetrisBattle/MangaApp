@@ -14,9 +14,7 @@ export const ChapterPage = observer(() => {
 	const { mangaStore } = useStore()
 
 	useEffect(() => {
-		if (mangaStore.manga.id !== mangaId) {
-			mangaStore.onLoad(mangaId, chapterId)
-		}
+		mangaStore.onLoad(mangaId, chapterId)
 	}, [mangaId, chapterId, mangaStore])
 
 	return (

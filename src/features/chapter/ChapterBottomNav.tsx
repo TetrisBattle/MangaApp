@@ -1,4 +1,4 @@
-import { Box, Button, Toolbar } from '@mui/material'
+import { Button, MenuItem, TextField, Toolbar } from '@mui/material'
 import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
 import { useNavigate } from 'react-router-dom'
@@ -8,8 +8,10 @@ export const BottomNav = observer(() => {
 	const navigate = useNavigate()
 
 	const moveTo = async (direction: 'prev' | 'next') => {
-		const target =
-			mangaStore.manga.chapter.number + direction === 'prev' ? -1 : 1
+		const target = (
+			Number(mangaStore.manga.chapter.number) +
+			(direction === 'prev' ? -1 : 1)
+		).toString()
 
 		const chapter = mangaStore.manga.chapters.find(
 			(chapter) => chapter.number === target
@@ -37,14 +39,26 @@ export const BottomNav = observer(() => {
 			}}
 		>
 			<Button onClick={async () => moveTo('prev')}>Prev</Button>
-			<Box
-				sx={{
-					textAlign: 'center',
-					fontSize: 24,
+			<TextField
+				value={mangaStore.manga.chapter.number}
+				onChange={(e) => {
+					const chapter = mangaStore.manga.chapters.find(
+						(chapter) => chapter.number === e.target.value
+					)
+					if (!chapter) throw new Error('Chapter not found!')
+					navigate(
+						`/manga/${mangaStore.manga.id}/chapter/${chapter.id}`
+					)
 				}}
+				select
+				sx={{ width: 0.25 }}
 			>
-				Chapter {mangaStore.manga.chapter.number}
-			</Box>
+				{mangaStore.manga.chapters.map((chapter) => (
+					<MenuItem key={chapter.id} value={chapter.number}>
+						{chapter.number}
+					</MenuItem>
+				))}
+			</TextField>
 			<Button onClick={async () => moveTo('next')}>Next</Button>
 		</Toolbar>
 	)
