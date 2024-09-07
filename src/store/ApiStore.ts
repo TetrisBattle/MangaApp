@@ -9,7 +9,6 @@ type Options = {
 	limit?: number
 	offset?: number
 	order?: 'asc' | 'desc'
-	chapter?: string
 }
 
 type CoverDto = {
@@ -33,6 +32,7 @@ type CoverDto = {
 export class ApiStore {
 	baseUrl = 'https://api.mangadex.org'
 	coversUrl = 'https://uploads.mangadex.org/covers'
+	maxLimit = 500
 
 	constructor() {
 		makeAutoObservable(this)
@@ -77,26 +77,24 @@ export class ApiStore {
 
 	getChapterDtos = async (
 		manga: Manga,
-		options: Options = { limit: 100, offset: 0 }
+		options?: Options
 	): Promise<ChapterDto[]> => {
-		const { limit, offset, order, chapter } = {
-			limit: options?.limit ?? 100,
+		const { limit, offset, order } = {
+			limit: options?.limit ?? this.maxLimit,
 			offset: options?.offset ?? 0,
 			order: options?.order ?? 'asc',
-			chapter: options?.chapter,
 		}
 
 		const chapterDtos: ChapterDto[] = await axios({
 			method: 'GET',
 			url: `${this.baseUrl}/manga/${manga.id}/feed`,
 			params: {
-				chapter: chapter,
 				offset: offset,
 				limit: limit,
 				translatedLanguage: ['en'],
 				includes: ['manga'],
 				order: {
-					chapter: order ?? 'asc',
+					chapter: order === 'asc' ? 'asc' : 'desc',
 					volume: 'desc',
 					readableAt: 'desc',
 					publishAt: 'desc',
@@ -106,20 +104,37 @@ export class ApiStore {
 			},
 		}).then((res) => res.data.data)
 
-		const hasAllChapters =
-			chapterDtos[chapterDtos.length - 1].attributes.chapter ===
-			manga.lastChapter.toString()
+		return this.filterChapters(chapterDtos)
+	}
 
-		if (!hasAllChapters) {
-			const moreChapterDtos = await this.getChapterDtos(manga, {
-				limit: limit,
-				offset: offset + 100,
+	getAllChapterDtos = async (manga: Manga, options?: Options) => {
+		const { offset, order } = {
+			offset: options?.offset ?? 0,
+			order: options?.order ?? 'desc',
+		}
+
+		const chapterDtos = await this.getChapterDtos(manga, {
+			offset: offset,
+			order: order,
+		})
+
+		const lastChapter =
+			order === 'asc' ? manga.lastChapterNumber : manga.firstChapterNumber
+
+		const hasLastChapter =
+			chapterDtos[chapterDtos.length - 1].attributes.chapter ===
+			lastChapter
+
+		if (!hasLastChapter) {
+			const moreChapterDtos = await this.getAllChapterDtos(manga, {
+				offset: offset + this.maxLimit,
+				order: order,
 			})
 
 			chapterDtos.push(...moreChapterDtos)
 		}
 
-		return this.filterChapters(chapterDtos)
+		return chapterDtos
 	}
 
 	getChapterImageDtos = async (

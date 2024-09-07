@@ -31,7 +31,7 @@ export const BottomNav = observer(() => {
 				bottom: 0,
 				justifyContent: 'space-evenly',
 				bgcolor: '#171717',
-				p: 2,
+				py: 2,
 				'.MuiButton-root': {
 					width: 0.25,
 					fontSize: 24,

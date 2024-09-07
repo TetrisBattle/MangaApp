@@ -32,7 +32,16 @@ export class MangaStore {
 		const coverUrl = await this.apiStore.getCoverUrl(manga)
 		manga.setCoverUrl(coverUrl)
 
-		const chapterDtos = await this.apiStore.getChapterDtos(manga)
+		const firstChapter = await this.apiStore
+			.getChapterDtos(manga, {
+				limit: 10,
+				order: 'asc',
+			})
+			.then((chapterDtos) => Chapter.convertFromDto(chapterDtos[0]))
+
+		manga.setFirstChapterNumber(firstChapter.number)
+
+		const chapterDtos = await this.apiStore.getAllChapterDtos(manga)
 		manga.setChapters(
 			chapterDtos.map((chapterDto) => Chapter.convertFromDto(chapterDto))
 		)

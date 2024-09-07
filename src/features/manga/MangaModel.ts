@@ -6,13 +6,14 @@ export class Manga {
 	chapter = new Chapter()
 	chapters: Chapter[] = []
 	coverUrl = ''
+	firstChapterNumber = ''
 
 	constructor(
 		public id = '',
 		public title = '',
 		public description = '',
 		public coverId = '',
-		public lastChapter = '',
+		public lastChapterNumber = '',
 		public status = '',
 		public tags: string[] = [],
 		public created = '',
@@ -31,6 +32,10 @@ export class Manga {
 
 	setCoverUrl = (coverUrl: string) => {
 		this.coverUrl = coverUrl
+	}
+
+	setFirstChapterNumber = (firstChapterNumber: string) => {
+		this.firstChapterNumber = firstChapterNumber
 	}
 
 	static convertFromDto = (mangaDto: MangaDto) => {
