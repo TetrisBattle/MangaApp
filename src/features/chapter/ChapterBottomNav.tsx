@@ -1,4 +1,4 @@
-import { Button, MenuItem, TextField, Toolbar } from '@mui/material'
+import { Button, MenuItem, TextField, Toolbar, Typography } from '@mui/material'
 import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
 import { useNavigate } from 'react-router-dom'
@@ -51,11 +51,13 @@ export const BottomNav = observer(() => {
 					)
 				}}
 				select
-				sx={{ width: 0.25 }}
+				sx={{ width: 0.25, '.MuiSelect-select': { py: 1 } }}
 			>
 				{mangaStore.manga.chapters.map((chapter) => (
 					<MenuItem key={chapter.id} value={chapter.number}>
-						{chapter.number}
+						<Typography sx={{ fontSize: 24 }}>
+							{chapter.number}
+						</Typography>
 					</MenuItem>
 				))}
 			</TextField>

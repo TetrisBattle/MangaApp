@@ -15,7 +15,7 @@ export const ChapterImages = observer(() => {
 		>
 			<Stack
 				sx={{
-					maxWidth: 800,
+					maxWidth: (theme) => theme.breakpoints.values.sm,
 					mx: 'auto',
 				}}
 			>

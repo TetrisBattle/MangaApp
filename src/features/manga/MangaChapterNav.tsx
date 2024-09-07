@@ -4,6 +4,7 @@ import {
 	Card,
 	CardContent,
 	Divider,
+	Grid2 as Grid,
 	Typography,
 } from '@mui/material'
 import { useStore } from 'store/useStore'
@@ -21,7 +22,13 @@ export const MangaChapterNav = observer(() => {
 
 	return (
 		<Card>
-			<CardContent>
+			<CardContent
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					gap: 2,
+				}}
+			>
 				<Typography
 					variant='h1'
 					sx={{
@@ -32,17 +39,19 @@ export const MangaChapterNav = observer(() => {
 				>
 					Chapters
 				</Typography>
-				<Divider sx={{ mt: 2, mb: 3 }} />
+
+				<Divider />
 
 				<Box
 					sx={{
+						mt: 1,
 						display: 'flex',
 						justifyContent: 'space-evenly',
 						gap: 2,
 						'.MuiButton-root': {
 							width: 1,
-							fontSize: 32,
-							py: 2,
+							fontSize: 24,
+							py: 1,
 						},
 					}}
 				>
@@ -50,15 +59,48 @@ export const MangaChapterNav = observer(() => {
 						component={NavLink}
 						to={`chapter/${firstChapter.id}`}
 					>
-						Chapter {firstChapter.number}
+						{firstChapter.number}
 					</Button>
 					<Button
 						component={NavLink}
 						to={`chapter/${lastChapter.id}`}
 					>
-						Chapter {lastChapter.number}
+						{lastChapter.number}
 					</Button>
 				</Box>
+
+				<Grid
+					container
+					spacing={2}
+					sx={{
+						mt: 2,
+						pt: 1,
+						pr: 2,
+						height: 200,
+						overflow: 'auto',
+					}}
+				>
+					{mangaStore.manga.chapters.map((chapter) => (
+						<Grid
+							key={chapter.id}
+							size={{
+								xs: 12 / 3,
+								sm: 12 / 7,
+								md: 12 / 10,
+							}}
+						>
+							<Button
+								component={NavLink}
+								to={`chapter/${chapter.id}`}
+								color='secondary'
+								fullWidth
+								sx={{ fontSize: 20, p: 0 }}
+							>
+								{chapter.number}
+							</Button>
+						</Grid>
+					))}
+				</Grid>
 			</CardContent>
 		</Card>
 	)

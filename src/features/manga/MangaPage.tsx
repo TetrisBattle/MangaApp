@@ -21,7 +21,12 @@ export const MangaPage = observer(() => {
 	}, [mangaStore, mangaId])
 
 	return (
-		<Box>
+		<Box
+			sx={{
+				maxWidth: (theme) => theme.breakpoints.values.lg,
+				mx: 'auto',
+			}}
+		>
 			<MangaCover />
 			<Stack sx={{ gap: 3, px: 2 }}>
 				<MangaMain />
