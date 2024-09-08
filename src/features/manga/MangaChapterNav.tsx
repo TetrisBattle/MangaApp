@@ -21,7 +21,7 @@ export const MangaChapterNav = observer(() => {
 		(chapter) => chapter.number === mangaStore.manga.lastChapterNumber
 	)
 
-	if (!firstChapter || !lastChapter) return <></>
+	if (!firstChapter || !lastChapter) return null
 
 	return (
 		<Card>
@@ -80,7 +80,7 @@ export const MangaChapterNav = observer(() => {
 						pt: 1,
 						pr: 2,
 						height: 200,
-						overflow: 'auto',
+						overflowY: 'auto',
 					}}
 				>
 					{mangaStore.manga.chapters.map((chapter) => (

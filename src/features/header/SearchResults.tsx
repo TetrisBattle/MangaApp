@@ -15,7 +15,7 @@ export const SearchResults = observer(() => {
 	const { searchStore } = useStore()
 
 	const open = !!(searchStore.isSearching && searchStore.title)
-	if (!open) return <></>
+	if (!open) return null
 
 	return (
 		<>
@@ -32,7 +32,7 @@ export const SearchResults = observer(() => {
 
 					maxHeight: 400,
 					flexShrink: 0,
-					overflowY: 'scroll',
+					overflowY: 'auto',
 				}}
 			>
 				{searchStore.searchResults.map((manga) => (

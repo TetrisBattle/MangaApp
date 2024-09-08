@@ -9,7 +9,7 @@ import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
-export const MangaMain = observer(() => {
+export const MangaDetails = observer(() => {
 	const { mangaStore } = useStore()
 	const [showDescription, setShowDescription] = useState(false)
 

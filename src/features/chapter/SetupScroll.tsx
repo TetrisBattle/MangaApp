@@ -12,5 +12,5 @@ export const SetupScroll = () => {
 		else appStore.setScrollPos('middle')
 	}, [appStore, scroll])
 
-	return <></>
+	return null
 }
