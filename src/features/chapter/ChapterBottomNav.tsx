@@ -61,7 +61,15 @@ export const BottomNav = observer(() => {
 					</MenuItem>
 				))}
 			</TextField>
-			<Button onClick={async () => moveTo('next')}>Next</Button>
+			<Button
+				disabled={
+					mangaStore.manga.chapter.number ===
+					mangaStore.manga.chapters[0].number
+				}
+				onClick={async () => moveTo('next')}
+			>
+				Next
+			</Button>
 		</Toolbar>
 	)
 })

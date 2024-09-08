@@ -30,7 +30,11 @@ export const MangaInfo = observer(() => {
 						Chapters: {mangaStore.manga.lastChapterNumber}
 					</Typography>
 
-					<Typography>Status: {mangaStore.manga.status}</Typography>
+					<Typography>
+						Status:{' '}
+						{mangaStore.manga.status.at(0)?.toUpperCase() +
+							mangaStore.manga.status.slice(1)}
+					</Typography>
 
 					<Typography>
 						Tags:{' '}
