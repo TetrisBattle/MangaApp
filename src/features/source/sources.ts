@@ -14,7 +14,7 @@ import manhuatop from 'assets/servers/manhuatop.png'
 import manhwatop from 'assets/servers/manhwatop.png'
 import mangakakalot from 'assets/servers/mangakakalot.png'
 
-type Server = {
+type Source = {
 	name: string
 	url: string
 	path: string
@@ -22,7 +22,7 @@ type Server = {
 	description?: string
 }
 
-export const servers: Server[] = [
+export const sources: Source[] = [
 	{
 		name: 'Manga Park',
 		url: 'https://mangapark.com/',

@@ -7,16 +7,18 @@ import { BottomNav } from './ChapterBottomNav'
 import { SetupScroll } from './SetupScroll'
 
 export const ChapterPage = observer(() => {
-	const { mangaId, chapterId } = useParams()
-	if (!mangaId || !chapterId) throw new Error('Id not found!')
+	const { source, mangaId, chapterId } = useParams()
+	if (!source) throw new Error('source not found!')
+	else if (!mangaId) throw new Error('mangaId not found!')
+	else if (!chapterId) throw new Error('chapterId not found!')
 
 	const { appStore, mangaStore } = useStore()
 	const containerRef = useRef<HTMLDivElement>(null)
 	const imageRefs = useRef<HTMLDivElement[] | null[]>([])
 
 	useEffect(() => {
-		mangaStore.onLoad(mangaId, chapterId)
-	}, [mangaId, chapterId, mangaStore])
+		mangaStore.onLoad(source, mangaId, chapterId)
+	}, [source, mangaId, chapterId, mangaStore])
 
 	useEffect(() => {
 		const scrollToImage = (image: number) => {

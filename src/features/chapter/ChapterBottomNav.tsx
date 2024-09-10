@@ -19,7 +19,9 @@ export const BottomNav = observer(() => {
 
 		if (!chapter) throw new Error('Chapter not found!')
 
-		navigate(`/manga/${mangaStore.manga.id}/chapter/${chapter.id}`)
+		navigate(
+			`${mangaStore.source}/manga/${mangaStore.manga.id}/chapter/${chapter.id}`
+		)
 	}
 
 	return (
@@ -47,7 +49,7 @@ export const BottomNav = observer(() => {
 					)
 					if (!chapter) throw new Error('Chapter not found!')
 					navigate(
-						`/manga/${mangaStore.manga.id}/chapter/${chapter.id}`
+						`${mangaStore.source}/manga/${mangaStore.manga.id}/chapter/${chapter.id}`
 					)
 				}}
 				select

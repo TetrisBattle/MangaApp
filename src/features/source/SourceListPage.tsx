@@ -7,16 +7,16 @@ import {
 	ListItemText,
 	Typography,
 } from '@mui/material'
-import { servers } from './servers'
+import { sources } from './sources'
 import { useNavigate } from 'react-router-dom'
 
-export const HomePage = () => {
+export const SourceListPage = () => {
 	const navigate = useNavigate()
 
 	return (
 		<Box id='Home'>
 			<List sx={{ p: 0, width: { md: 'fit-content' }, mx: 'auto' }}>
-				{servers.map((server) => (
+				{sources.map((server) => (
 					<ListItem key={server.name} disablePadding>
 						<ListItemButton onClick={() => navigate(server.path)}>
 							<ListItemIcon>

@@ -12,7 +12,7 @@ import { observer } from 'mobx-react-lite'
 import { NavLink } from 'react-router-dom'
 
 export const SearchResults = observer(() => {
-	const { searchStore } = useStore()
+	const { searchStore, mangaStore } = useStore()
 
 	const open = !!(searchStore.isSearching && searchStore.title)
 	if (!open) return null
@@ -39,7 +39,7 @@ export const SearchResults = observer(() => {
 					<Card key={manga.id} sx={{ flexShrink: 0 }}>
 						<CardActionArea
 							component={NavLink}
-							to={`/manga/${manga.id}`}
+							to={`${mangaStore.source}/manga/${manga.id}`}
 							onClick={() => searchStore.reset()}
 							sx={{
 								display: 'flex',

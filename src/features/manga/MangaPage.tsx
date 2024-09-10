@@ -9,16 +9,17 @@ import { MangaChapterNav } from './MangaChapterNav'
 import { MangaInfo } from './MangaInfo'
 
 export const MangaPage = observer(() => {
-	const { mangaId } = useParams()
-	if (!mangaId) throw new Error('mangaId not found!')
+	const { source, mangaId } = useParams()
+	if (!source) throw new Error('source not found!')
+	else if (!mangaId) throw new Error('mangaId not found!')
 
 	const { mangaStore } = useStore()
 
 	useEffect(() => {
 		if (mangaStore.manga.id !== mangaId) {
-			mangaStore.onLoad(mangaId)
+			mangaStore.onLoad(source, mangaId)
 		}
-	}, [mangaStore, mangaId])
+	}, [mangaStore, source, mangaId])
 
 	if (!mangaStore.manga.chapters.length) return null
 

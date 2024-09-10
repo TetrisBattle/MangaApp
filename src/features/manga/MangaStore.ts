@@ -6,12 +6,15 @@ import { ChapterImages } from 'features/chapter/ChapterImagesModel'
 
 export class MangaStore {
 	manga = new Manga()
+	source = '0'
 
 	constructor(private apiStore: ApiStore) {
 		makeAutoObservable(this)
 	}
 
-	onLoad = async (mangaId: string, chapterId?: string) => {
+	onLoad = async (source: string, mangaId: string, chapterId?: string) => {
+		this.source = source
+
 		if (this.manga.id !== mangaId) {
 			const manga = await this.getManga(mangaId)
 			runInAction(() => {
