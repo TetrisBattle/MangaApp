@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { App } from 'App'
 import { NotFound } from 'features/NotFound'
-import { HomePage } from 'features/HomePage'
+import { HomePage } from 'features/home/HomePage'
 import { MangaPage } from 'features/manga/MangaPage'
 import { ChapterPage } from 'features/chapter/ChapterPage'
 

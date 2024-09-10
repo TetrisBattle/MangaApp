@@ -34,7 +34,7 @@ export const Header = observer(() => {
 							bgcolor: 'transparent',
 						}}
 					>
-						<Logo size={48} />
+						<Logo size={40} />
 					</Button>
 
 					<Typography
@@ -42,6 +42,10 @@ export const Header = observer(() => {
 						component={NavLink}
 						to='/'
 						sx={{
+							display: {
+								xs: 'none',
+								md: 'block',
+							},
 							fontSize: 24,
 							fontWeight: (theme) =>
 								theme.typography.fontWeightRegular,
