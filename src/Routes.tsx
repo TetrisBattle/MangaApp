@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { App } from 'App'
 import { NotFound } from 'features/NotFound'
-import { SourceListPage } from 'features/source/SourceListPage'
+import { SourceList } from 'features/source/SourceList'
 import { SourcePage } from 'features/source/SourcePage'
 import { MangaPage } from 'features/manga/MangaPage'
 import { ChapterPage } from 'features/chapter/ChapterPage'
@@ -9,7 +9,7 @@ import { ChapterPage } from 'features/chapter/ChapterPage'
 const getPages = () => {
 	const pages = [
 		{ path: '/404', element: <NotFound /> },
-		{ path: '/', element: <SourceListPage /> },
+		{ path: '/', element: <SourceList /> },
 		{
 			path: '/:source',
 			element: <SourcePage />,
