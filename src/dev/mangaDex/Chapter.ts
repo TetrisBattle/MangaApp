@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import { ChapterDto } from './ChapterDto'
+import { ChapterDto } from 'dev/mangaDex/ChapterDto'
 
 export class Chapter {
 	imageUrls: string[] = []

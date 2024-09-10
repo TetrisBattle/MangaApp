@@ -10,60 +10,75 @@ import {
 import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
 import { NavLink } from 'react-router-dom'
+import { Manga } from 'features/manga/MangaStore'
+import { useEffect, useState } from 'react'
 
-export const SearchResults = observer(() => {
-	const { searchStore, mangaStore } = useStore()
+export const SearchResults = observer(
+	({ name, reset }: { name: string; reset: () => void }) => {
+		const { mangaStore } = useStore()
+		const [searchResults, setsearchResults] = useState<Manga[]>([])
 
-	const open = !!(searchStore.isSearching && searchStore.title)
-	if (!open) return null
+		useEffect(() => {
+			const search = async (name: string) => {
+				const mangas = await mangaStore.search(name)
+				setsearchResults(mangas)
+			}
+			search(name)
+		}, [name, mangaStore])
 
-	return (
-		<>
-			<Stack
-				sx={{
-					px: 2,
-					pb: 2,
-					mx: 5,
-					bgcolor: '#171717',
-					gap: 1,
-					zIndex: (theme) => theme.zIndex.appBar,
-					position: 'absolute',
-					left: 145,
+		const onMangaClick = () => {
+			setsearchResults([])
+			reset()
+		}
 
-					maxHeight: 400,
-					flexShrink: 0,
-					overflowY: 'auto',
-				}}
-			>
-				{searchStore.searchResults.map((manga) => (
-					<Card key={manga.id} sx={{ flexShrink: 0 }}>
-						<CardActionArea
-							component={NavLink}
-							to={`${mangaStore.source}/manga/${manga.id}`}
-							onClick={() => searchStore.reset()}
-							sx={{
-								display: 'flex',
-								justifyContent: 'left',
-							}}
-						>
-							<CardMedia
-								component='img'
-								src={manga.coverUrl}
-								alt='image'
-								sx={{ width: 'auto', height: 50, px: 1 }}
-							/>
-							<CardContent>
-								<Typography>{manga.title}</Typography>
-							</CardContent>
-						</CardActionArea>
-					</Card>
-				))}
-			</Stack>
+		return (
+			<>
+				<Stack
+					sx={{
+						px: 2,
+						pb: 2,
+						mx: 5,
+						bgcolor: '#171717',
+						gap: 1,
+						zIndex: (theme) => theme.zIndex.appBar,
+						position: 'absolute',
+						left: 145,
 
-			<Backdrop
-				open={open}
-				sx={{ zIndex: (theme) => theme.zIndex.appBar - 1 }}
-			/>
-		</>
-	)
-})
+						maxHeight: 400,
+						flexShrink: 0,
+						overflowY: 'auto',
+					}}
+				>
+					{searchResults?.map((manga) => (
+						<Card key={manga.id} sx={{ flexShrink: 0 }}>
+							<CardActionArea
+								component={NavLink}
+								to={`${mangaStore.source}/manga/${manga.id}`}
+								onClick={() => onMangaClick()}
+								sx={{
+									display: 'flex',
+									justifyContent: 'left',
+								}}
+							>
+								<CardMedia
+									component='img'
+									src={manga.coverUrl}
+									alt='image'
+									sx={{ width: 'auto', height: 50, px: 1 }}
+								/>
+								<CardContent>
+									<Typography>{manga.title}</Typography>
+								</CardContent>
+							</CardActionArea>
+						</Card>
+					))}
+				</Stack>
+
+				<Backdrop
+					open={true}
+					sx={{ zIndex: (theme) => theme.zIndex.appBar - 1 }}
+				/>
+			</>
+		)
+	}
+)

@@ -1,14 +1,22 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
 import { Logo } from 'assets/Logo'
-import { Account } from './AccountIcon'
-import { Search } from './SearchIcon'
+import { Account } from './Account'
+import { Search } from './Search'
 import { NavLink } from 'react-router-dom'
 import { SearchResults } from './SearchResults'
 import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
 
 export const Header = observer(() => {
 	const { appStore } = useStore()
+	const [isSearching, setIsSearching] = useState(false)
+	const [searchInputValue, setSearchInputValue] = useState('')
+
+	const reset = () => {
+		setSearchInputValue('')
+		setIsSearching(false)
+	}
 
 	return (
 		<Box>
@@ -64,12 +72,20 @@ export const Header = observer(() => {
 							justifyContent: 'flex-end',
 						}}
 					>
-						<Search />
+						<Search
+							isSearching={isSearching}
+							setIsSearching={setIsSearching}
+							searchInputValue={searchInputValue}
+							setSearchInputValue={setSearchInputValue}
+						/>
 						<Account />
 					</Box>
 				</Toolbar>
 			</AppBar>
-			<SearchResults />
+
+			{isSearching && searchInputValue && (
+				<SearchResults name={searchInputValue} reset={reset} />
+			)}
 		</Box>
 	)
 })

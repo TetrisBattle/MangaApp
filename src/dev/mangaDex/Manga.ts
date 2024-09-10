@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import { MangaDto } from './MangaDto'
-import { Chapter } from 'features/chapter/ChapterModel'
+import { Chapter } from 'dev/mangaDex/Chapter'
 
 export class Manga {
 	chapter = new Chapter()

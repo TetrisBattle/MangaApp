@@ -1,15 +1,18 @@
-import { ApiStore } from './ApiStore'
 import { AppStore } from './AppStore'
-import { SearchStore } from 'features/header/SearchStore'
 import { MangaStore } from '../features/manga/MangaStore'
 import { UserStore } from './UserStore'
+// import { MangaDexStore } from 'dev/mangaDex/MangaDexStore'
 
 class RootStore {
-	apiStore = new ApiStore()
 	appStore = new AppStore()
 	userStore = new UserStore()
-	searchStore = new SearchStore(this.apiStore)
-	mangaStore = new MangaStore(this.apiStore)
+	mangaStore: MangaStore = new MangaStore()
+
+	constructor() {
+		// if (process.env.NODE_ENV === 'development') {
+		// 	this.mangaStore = new MangaDexStore()
+		// }
+	}
 }
 
 export const rootStore = new RootStore()

@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { makeAutoObservable } from 'mobx'
-import { Manga } from 'features/manga/MangaModel'
-import { MangaDto } from 'features/manga/MangaDto'
-import { ChapterDto } from 'features/chapter/ChapterDto'
-import { ChapterImagesDto } from 'features/chapter/ChapterImagesModel'
+import { MangaDto } from 'dev/mangaDex/MangaDto'
+import { ChapterDto } from 'dev/mangaDex/ChapterDto'
+import { ChapterImagesDto } from 'dev/mangaDex/ChapterImagesModel'
+import { Manga } from './Manga'
+import { Chapter } from './Chapter'
 
 type Options = {
 	limit?: number
@@ -29,13 +29,21 @@ type CoverDto = {
 	}>
 }
 
-export class ApiStore {
+export class MangaDexApi {
 	baseUrl = 'https://api.mangadex.org'
 	coversUrl = 'https://uploads.mangadex.org/covers'
 	maxLimit = 500
 
-	constructor() {
-		makeAutoObservable(this)
+	static convertFromChapterDto = (chapterDto: ChapterDto) => {
+		return new Chapter(
+			chapterDto.id,
+			chapterDto.attributes.chapter,
+			chapterDto.attributes.pages,
+			chapterDto.attributes.publishAt,
+			chapterDto.attributes.readableAt,
+			chapterDto.attributes.createdAt,
+			chapterDto.attributes.updatedAt
+		)
 	}
 
 	getMangaDto = async (mangaId: string): Promise<MangaDto> => {

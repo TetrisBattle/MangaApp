@@ -1,14 +1,44 @@
 import { makeAutoObservable, runInAction } from 'mobx'
-import { ApiStore } from '../../store/ApiStore'
-import { Manga } from './MangaModel'
-import { Chapter } from 'features/chapter/ChapterModel'
-import { ChapterImages } from 'features/chapter/ChapterImagesModel'
+import { Api } from 'api/Api'
+
+export type Manga = {
+	id: string
+	title: string
+	description: string
+	coverUrl: string
+	chapters: Chapter[]
+	status: string
+	tags: string[]
+	created: string
+	updated: string
+}
+
+export type Chapter = {
+	id: string
+	pages: string[]
+	imageUrls: string[]
+}
 
 export class MangaStore {
-	manga = new Manga()
-	source = 'dev'
+	private api = new Api()
+	manga: Manga = {
+		id: '',
+		title: '',
+		description: '',
+		coverUrl: '',
+		chapters: [],
+		status: '',
+		tags: [],
+		created: '',
+		updated: '',
+	}
 
-	constructor(private apiStore: ApiStore) {
+	// url params
+	source = ''
+	mangaId = ''
+	chapterId = ''
+
+	constructor() {
 		makeAutoObservable(this)
 	}
 
@@ -18,63 +48,25 @@ export class MangaStore {
 		}
 
 		if (this.manga.id !== mangaId) {
-			const manga = await this.getManga(mangaId)
+			const manga = await this.api.getManga(mangaId)
 			runInAction(() => {
 				this.manga = manga
 			})
 		}
 
 		if (chapterId) {
-			const chapter = await this.getChapter(chapterId)
-			this.manga.setChapter(chapter)
+			const chapter = await this.api.getChapter(mangaId, chapterId)
+
+			const selectedChapter = this.manga.chapters.find(
+				(chapter) => chapter.id === chapterId
+			)
+			if (!selectedChapter) return
+
+			selectedChapter.imageUrls = chapter.imageUrls
 		}
 	}
 
-	private getManga = async (mangaId: string): Promise<Manga> => {
-		const mangaDto = await this.apiStore.getMangaDto(mangaId)
-		const manga = Manga.convertFromDto(mangaDto)
-
-		const coverUrl = await this.apiStore.getCoverUrl(manga)
-		manga.setCoverUrl(coverUrl)
-
-		const firstChapter = await this.apiStore
-			.getChapterDtos(manga, {
-				limit: 10,
-				order: 'asc',
-			})
-			.then((chapterDtos) => Chapter.convertFromDto(chapterDtos[0]))
-
-		manga.setFirstChapterNumber(firstChapter.number)
-
-		const chapterDtos = await this.apiStore.getAllChapterDtos(manga)
-		manga.setChapters(
-			chapterDtos.map((chapterDto) => Chapter.convertFromDto(chapterDto))
-		)
-
-		return manga
-	}
-
-	private getChapter = async (chapterId: string): Promise<Chapter> => {
-		const chapter = this.manga.chapters.find(
-			(chapter) => chapter.id === chapterId
-		)
-		if (!chapter) throw new Error('Chapter not found')
-
-		const urls = await this.getChapterImageUrls(chapterId)
-		chapter.setImageUrls(urls)
-
-		return chapter
-	}
-
-	private getChapterImageUrls = async (chapterId: string) => {
-		const chapterImagesDtos =
-			await this.apiStore.getChapterImageDtos(chapterId)
-
-		const chapterImages = ChapterImages.convertFromDto(chapterImagesDtos)
-
-		return chapterImages.data.map(
-			(image) =>
-				`${chapterImages.host}/data/${chapterImages.hash}/${image}`
-		)
+	search = async (name: string) => {
+		return await this.api.searchManga(name)
 	}
 }
