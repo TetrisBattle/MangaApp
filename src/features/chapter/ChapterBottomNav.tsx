@@ -9,20 +9,21 @@ export const BottomNav = observer(() => {
 
 	const moveTo = async (direction: 'prev' | 'next') => {
 		const target = (
-			Number(mangaStore.manga.chapter.number) +
-			(direction === 'prev' ? -1 : 1)
+			Number(mangaStore.manga.id) + (direction === 'prev' ? -1 : 1)
 		).toString()
 
 		const chapter = mangaStore.manga.chapters.find(
-			(chapter) => chapter.number === target
+			(chapter) => chapter.id === target
 		)
 
 		if (!chapter) throw new Error('Chapter not found!')
 
 		navigate(
-			`${mangaStore.source}/manga/${mangaStore.manga.id}/chapter/${chapter.id}`
+			`/${mangaStore.source}/manga/${mangaStore.manga.id}/chapter/${chapter.id}`
 		)
 	}
+
+	if (!mangaStore.selectedChapter) return <></>
 
 	return (
 		<Toolbar
@@ -42,31 +43,31 @@ export const BottomNav = observer(() => {
 		>
 			<Button onClick={async () => moveTo('prev')}>Prev</Button>
 			<TextField
-				value={mangaStore.manga.chapter.number}
+				value={mangaStore.selectedChapter.id}
 				onChange={(e) => {
 					const chapter = mangaStore.manga.chapters.find(
-						(chapter) => chapter.number === e.target.value
+						(chapter) => chapter.id === e.target.value
 					)
 					if (!chapter) throw new Error('Chapter not found!')
 					navigate(
-						`${mangaStore.source}/manga/${mangaStore.manga.id}/chapter/${chapter.id}`
+						`/${mangaStore.source}/manga/${mangaStore.manga.id}/chapter/${chapter.id}`
 					)
 				}}
 				select
 				sx={{ width: 0.25, '.MuiSelect-select': { py: 1 } }}
 			>
 				{mangaStore.manga.chapters.map((chapter) => (
-					<MenuItem key={chapter.id} value={chapter.number}>
+					<MenuItem key={chapter.id} value={chapter.id}>
 						<Typography sx={{ fontSize: 24 }}>
-							{chapter.number}
+							{chapter.id}
 						</Typography>
 					</MenuItem>
 				))}
 			</TextField>
 			<Button
 				disabled={
-					mangaStore.manga.chapter.number ===
-					mangaStore.manga.chapters[0].number
+					mangaStore.selectedChapter?.id ===
+					mangaStore.manga.chapters[0].id
 				}
 				onClick={async () => moveTo('next')}
 			>

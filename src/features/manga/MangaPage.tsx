@@ -21,7 +21,7 @@ export const MangaPage = observer(() => {
 		}
 	}, [mangaStore, source, mangaId])
 
-	if (!mangaStore.manga.chapters.length) return null
+	if (!mangaStore.manga.chapters.length) return <></>
 
 	return (
 		<Box

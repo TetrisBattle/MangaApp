@@ -32,7 +32,7 @@ export const ChapterPage = observer(() => {
 		scrollToImage(5)
 	}, [appStore.headerHeight, imageRefs.current.length])
 
-	if (!mangaStore.manga.chapters.length) return null
+	if (!mangaStore.manga.chapters.length) return <></>
 
 	return (
 		<Box>
@@ -54,14 +54,16 @@ export const ChapterPage = observer(() => {
 						mx: 'auto',
 					}}
 				>
-					{mangaStore.manga.chapter.imageUrls.map((image, index) => (
-						<img
-							ref={(el) => (imageRefs.current[index] = el)}
-							key={image}
-							src={image}
-							alt='image'
-						/>
-					))}
+					{mangaStore.selectedChapter?.imageUrls.map(
+						(imageUrl, index) => (
+							<img
+								ref={(el) => (imageRefs.current[index] = el)}
+								key={imageUrl}
+								src={imageUrl}
+								alt='image'
+							/>
+						)
+					)}
 				</Stack>
 				<BottomNav />
 			</Box>

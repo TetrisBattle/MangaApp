@@ -6,7 +6,7 @@ import {
 	ListItemText,
 	Typography,
 } from '@mui/material'
-import { sources } from '../../dev/sources'
+import { sources } from './sources'
 import { useNavigate } from 'react-router-dom'
 
 export const SourceList = () => {

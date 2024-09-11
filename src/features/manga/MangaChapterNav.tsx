@@ -14,14 +14,11 @@ import { NavLink } from 'react-router-dom'
 export const MangaChapterNav = observer(() => {
 	const { mangaStore } = useStore()
 
-	const firstChapter = mangaStore.manga.chapters.find(
-		(chapter) => chapter.number === mangaStore.manga.firstChapterNumber
-	)
-	const lastChapter = mangaStore.manga.chapters.find(
-		(chapter) => chapter.number === mangaStore.manga.lastChapterNumber
-	)
+	const firstChapter = mangaStore.manga.chapters[0]
+	const lastChapter =
+		mangaStore.manga.chapters[mangaStore.manga.chapters.length - 1]
 
-	if (!firstChapter || !lastChapter) return null
+	if (!firstChapter || !lastChapter) return <></>
 
 	return (
 		<Card>
@@ -62,13 +59,13 @@ export const MangaChapterNav = observer(() => {
 						component={NavLink}
 						to={`chapter/${firstChapter.id}`}
 					>
-						{firstChapter.number}
+						{firstChapter.id}
 					</Button>
 					<Button
 						component={NavLink}
 						to={`chapter/${lastChapter.id}`}
 					>
-						{lastChapter.number}
+						{lastChapter.id}
 					</Button>
 				</Box>
 
@@ -99,7 +96,7 @@ export const MangaChapterNav = observer(() => {
 								fullWidth
 								sx={{ fontSize: 20, p: 0 }}
 							>
-								{chapter.number}
+								{chapter.id}
 							</Button>
 						</Grid>
 					))}

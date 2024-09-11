@@ -34,7 +34,7 @@ export class MangaStore {
 	}
 
 	// url params
-	source = ''
+	source = 'dev'
 	mangaId = ''
 	chapterId = ''
 
@@ -42,27 +42,37 @@ export class MangaStore {
 		makeAutoObservable(this)
 	}
 
+	get selectedChapter() {
+		const chapter = this.manga.chapters.find(
+			(chapter) => chapter.id === this.chapterId
+		)
+		return chapter
+	}
+
 	onLoad = async (source: string, mangaId: string, chapterId?: string) => {
 		if (process.env.NODE_ENV !== 'development') {
-			this.source = source
+			runInAction(() => {
+				this.source = source
+			})
 		}
 
 		if (this.manga.id !== mangaId) {
 			const manga = await this.api.getManga(mangaId)
 			runInAction(() => {
+				this.mangaId = mangaId
 				this.manga = manga
 			})
 		}
 
 		if (chapterId) {
 			const chapter = await this.api.getChapter(mangaId, chapterId)
-
-			const selectedChapter = this.manga.chapters.find(
-				(chapter) => chapter.id === chapterId
-			)
-			if (!selectedChapter) return
-
-			selectedChapter.imageUrls = chapter.imageUrls
+			runInAction(() => {
+				this.chapterId = chapterId
+				if (!this.selectedChapter) {
+					throw new Error('Current chapter not found')
+				}
+				this.selectedChapter.imageUrls = chapter.imageUrls
+			})
 		}
 	}
 
