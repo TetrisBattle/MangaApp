@@ -3,7 +3,7 @@ import { makeAutoObservable } from 'mobx'
 type ScrollPos = 'top' | 'bottom' | 'middle'
 
 export class AppStore {
-	headerHeight = 64
+	headerHeight = 40
 	showHeader = true
 	scrollPos: ScrollPos = 'top'
 
@@ -13,17 +13,5 @@ export class AppStore {
 
 	setShowHeader = (showHeader: boolean) => {
 		this.showHeader = showHeader
-	}
-
-	toggleShowHeader = () => {
-		this.showHeader = !this.showHeader
-	}
-
-	setScrollPos = (scrollPos: ScrollPos) => {
-		this.scrollPos = scrollPos
-
-		if (scrollPos === 'top' || scrollPos === 'bottom') {
-			this.setShowHeader(true)
-		} else this.setShowHeader(false)
 	}
 }

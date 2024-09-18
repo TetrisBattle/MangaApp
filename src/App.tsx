@@ -1,17 +1,43 @@
-import { Box } from '@mui/material'
-import { Header } from 'features/header/Header'
-import { Outlet } from 'react-router-dom'
-import { useStore } from 'store/useStore'
-
+import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom'
+import { NotFound } from 'features/NotFound'
+import { SourceList } from 'features/source/SourceList'
+import { SourcePage } from 'features/source/SourcePage'
+import { MangaPage } from 'features/manga/MangaPage'
+import { ChapterPage } from 'features/chapter/ChapterPage'
 import 'scrollbar.css'
 
-export const App = () => {
-	const { appStore } = useStore()
+const getPages = () => {
+	const pages = [
+		{ path: '/404', element: <NotFound /> },
+		{ path: '/', element: <SourceList /> },
+		{
+			path: '/:source',
+			element: <SourcePage />,
+		},
+		{
+			path: '/:source/manga/:mangaId',
+			element: <MangaPage />,
+		},
+		{
+			path: '/:source/manga/:mangaId/chapter/:chapterId',
+			element: <ChapterPage />,
+		},
+	]
 
-	return (
-		<Box sx={{ pt: appStore.headerHeight / 8 }}>
-			<Header />
-			<Outlet />
-		</Box>
-	)
+	const isDev = process.env.NODE_ENV === 'development'
+	if (!isDev)
+		pages.push({
+			path: '*',
+			element: <Navigate replace to='/404' />,
+		})
+
+	return pages
 }
+
+export const router = createBrowserRouter([
+	{
+		path: '/',
+		element: <Outlet />,
+		children: getPages(),
+	},
+])

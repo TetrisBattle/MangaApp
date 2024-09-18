@@ -1,10 +1,10 @@
 import { Box, Stack } from '@mui/material'
 import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { BottomNav } from './ChapterBottomNav'
-import { SetupScroll } from './SetupScroll'
+import { Header } from 'features/header/Header'
 
 export const ChapterPage = observer(() => {
 	const { source, mangaId, chapterId } = useParams()
@@ -15,6 +15,9 @@ export const ChapterPage = observer(() => {
 	const { appStore, mangaStore } = useStore()
 	const containerRef = useRef<HTMLDivElement>(null)
 	const imageRefs = useRef<HTMLDivElement[] | null[]>([])
+	const [scrollPos, setScrollPos] = useState<'top' | 'middle' | 'bottom'>(
+		'top'
+	)
 
 	useEffect(() => {
 		mangaStore.onLoad(source, mangaId, chapterId)
@@ -35,39 +38,59 @@ export const ChapterPage = observer(() => {
 	if (!mangaStore.manga.chapters.length) return <></>
 
 	return (
-		<Box>
-			<Box
-				ref={containerRef}
-				onClick={() => {
-					if (appStore.scrollPos === 'middle') {
-						appStore.toggleShowHeader()
-					}
-				}}
+		<Box
+			ref={containerRef}
+			onClick={() => {
+				if (scrollPos === 'middle') {
+					appStore.setShowHeader(!appStore.showHeader)
+				}
+			}}
+			onScroll={() => {
+				const scroll = containerRef.current?.scrollTop ?? 0
+				const scrollHeight = containerRef.current?.scrollHeight ?? 0
+				const clientHeight = containerRef.current?.clientHeight ?? 0
+				const scrollArea = scrollHeight - clientHeight
+
+				if (scroll === 0) {
+					setScrollPos('top')
+					appStore.setShowHeader(true)
+				} else if (scroll >= scrollArea) {
+					setScrollPos('bottom')
+					appStore.setShowHeader(true)
+				} else {
+					setScrollPos('middle')
+					appStore.setShowHeader(false)
+				}
+			}}
+			sx={{
+				overflow: 'auto',
+				height: '100dvh',
+			}}
+		>
+			<Header
 				sx={{
-					overflow: 'auto',
-					height: `calc(100vh - ${appStore.headerHeight}px)`,
+					position: 'sticky',
+					visibility: appStore.showHeader ? 'visible' : 'hidden',
+				}}
+			/>
+			<Stack
+				sx={{
+					maxWidth: (theme) => theme.breakpoints.values.sm,
+					mx: 'auto',
 				}}
 			>
-				<Stack
-					sx={{
-						maxWidth: (theme) => theme.breakpoints.values.sm,
-						mx: 'auto',
-					}}
-				>
-					{mangaStore.selectedChapter?.imageUrls.map(
-						(imageUrl, index) => (
-							<img
-								ref={(el) => (imageRefs.current[index] = el)}
-								key={imageUrl}
-								src={imageUrl}
-								alt='image'
-							/>
-						)
-					)}
-				</Stack>
-				<BottomNav />
-			</Box>
-			<SetupScroll />
+				{mangaStore.selectedChapter?.imageUrls.map(
+					(imageUrl, index) => (
+						<img
+							ref={(el) => (imageRefs.current[index] = el)}
+							key={imageUrl}
+							src={imageUrl}
+							alt='image'
+						/>
+					)
+				)}
+			</Stack>
+			<BottomNav />
 		</Box>
 	)
 })

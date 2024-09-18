@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
-import { router } from 'Routes'
+import { router } from 'App'
 import { StoreProvider } from 'store/StoreProvider'
 import { MuiThemeProvider } from 'theme/MuiThemeProvider'
 

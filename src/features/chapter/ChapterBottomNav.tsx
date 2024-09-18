@@ -28,20 +28,27 @@ export const BottomNav = observer(() => {
 	return (
 		<Toolbar
 			sx={{
-				display: appStore.showHeader ? 'flex' : 'none',
+				visibility: appStore.showHeader ? 'visible' : 'hidden',
 				width: 1,
 				position: 'sticky',
 				bottom: 0,
 				justifyContent: 'space-evenly',
 				bgcolor: '#171717',
-				py: 2,
+				py: 1.5,
 				'.MuiButton-root': {
 					width: 0.25,
-					fontSize: 24,
 				},
 			}}
 		>
-			<Button onClick={async () => moveTo('prev')}>Prev</Button>
+			<Button
+				onClick={async () => moveTo('prev')}
+				disabled={
+					mangaStore.selectedChapter?.id ===
+					mangaStore.manga.chapters[0].id
+				}
+			>
+				Prev
+			</Button>
 			<TextField
 				value={mangaStore.selectedChapter.id}
 				onChange={(e) => {
@@ -58,18 +65,18 @@ export const BottomNav = observer(() => {
 			>
 				{mangaStore.manga.chapters.map((chapter) => (
 					<MenuItem key={chapter.id} value={chapter.id}>
-						<Typography sx={{ fontSize: 24 }}>
-							{chapter.id}
-						</Typography>
+						<Typography>{chapter.id}</Typography>
 					</MenuItem>
 				))}
 			</TextField>
 			<Button
+				onClick={async () => moveTo('next')}
 				disabled={
 					mangaStore.selectedChapter?.id ===
-					mangaStore.manga.chapters[0].id
+					mangaStore.manga.chapters[
+						mangaStore.manga.chapters.length - 1
+					].id
 				}
-				onClick={async () => moveTo('next')}
 			>
 				Next
 			</Button>

@@ -7,6 +7,7 @@ import { MangaCover } from './MangaCover'
 import { MangaDetails } from './MangaDetails'
 import { MangaChapterNav } from './MangaChapterNav'
 import { MangaInfo } from './MangaInfo'
+import { Header } from 'features/header/Header'
 
 export const MangaPage = observer(() => {
 	const { source, mangaId } = useParams()
@@ -24,18 +25,21 @@ export const MangaPage = observer(() => {
 	if (!mangaStore.manga.chapters.length) return <></>
 
 	return (
-		<Box
-			sx={{
-				maxWidth: (theme) => theme.breakpoints.values.lg,
-				mx: 'auto',
-			}}
-		>
-			<MangaCover />
-			<Stack sx={{ gap: 3, px: 2 }}>
-				<MangaDetails />
-				<MangaChapterNav />
-				<MangaInfo />
-			</Stack>
-		</Box>
+		<>
+			<Header />
+			<Box
+				sx={{
+					maxWidth: (theme) => theme.breakpoints.values.lg,
+					mx: 'auto',
+				}}
+			>
+				<MangaCover />
+				<Stack sx={{ gap: 3, px: 2 }}>
+					<MangaDetails />
+					<MangaChapterNav />
+					<MangaInfo />
+				</Stack>
+			</Box>
+		</>
 	)
 })
