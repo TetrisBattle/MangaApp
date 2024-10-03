@@ -59,13 +59,13 @@ export const MangaChapterNav = observer(() => {
 						component={NavLink}
 						to={`chapter/${firstChapter.id}`}
 					>
-						{firstChapter.id}
+						{firstChapter.number}
 					</Button>
 					<Button
 						component={NavLink}
 						to={`chapter/${lastChapter.id}`}
 					>
-						{lastChapter.id}
+						{lastChapter.number}
 					</Button>
 				</Box>
 
@@ -80,26 +80,29 @@ export const MangaChapterNav = observer(() => {
 						overflowY: 'auto',
 					}}
 				>
-					{mangaStore.manga.chapters.map((chapter) => (
-						<Grid
-							key={chapter.id}
-							size={{
-								xs: 12 / 3,
-								sm: 12 / 7,
-								md: 12 / 10,
-							}}
-						>
-							<Button
-								component={NavLink}
-								to={`chapter/${chapter.id}`}
-								color='secondary'
-								fullWidth
-								sx={{ fontSize: 20, p: 0 }}
+					{mangaStore.manga.chapters
+						.slice()
+						.reverse()
+						.map((chapter) => (
+							<Grid
+								key={chapter.id}
+								size={{
+									xs: 12 / 3,
+									sm: 12 / 7,
+									md: 12 / 10,
+								}}
 							>
-								{chapter.id}
-							</Button>
-						</Grid>
-					))}
+								<Button
+									component={NavLink}
+									to={`chapter/${chapter.id}`}
+									color='secondary'
+									fullWidth
+									sx={{ fontSize: 20, p: 0 }}
+								>
+									{chapter.number}
+								</Button>
+							</Grid>
+						))}
 				</Grid>
 			</CardContent>
 		</Card>

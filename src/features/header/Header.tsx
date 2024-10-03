@@ -27,73 +27,73 @@ export const Header = observer(({ sx = [] }: { sx?: SxProps<Theme> }) => {
 	}
 
 	return (
-		<AppBar
-			sx={[
-				{
-					position: 'static',
-					background: '#171717',
-					zIndex: (theme) => theme.zIndex.appBar,
-					inset: 0,
-					bottom: 'auto',
-				},
-				...(Array.isArray(sx) ? sx : [sx]),
-			]}
-		>
-			<Toolbar sx={{ height: appStore.headerHeight, pr: 1 }}>
-				<Button
-					variant='text'
-					component={NavLink}
-					to='/'
-					disableFocusRipple
-					disableRipple
-					sx={{
-						fontSize: 24,
-						bgcolor: 'transparent',
-					}}
-				>
-					<Logo size={40} />
-				</Button>
+		<>
+			<AppBar
+				sx={[
+					{
+						position: 'static',
+						background: '#171717',
+						inset: 0,
+						bottom: 'auto',
+					},
+					...(Array.isArray(sx) ? sx : [sx]),
+				]}
+			>
+				<Toolbar sx={{ height: appStore.headerHeight, pr: 1 }}>
+					<Button
+						variant='text'
+						component={NavLink}
+						to='/'
+						disableFocusRipple
+						disableRipple
+						sx={{
+							fontSize: 24,
+							bgcolor: 'transparent',
+						}}
+					>
+						<Logo size={40} />
+					</Button>
 
-				<Typography
-					variant='h1'
-					component={NavLink}
-					to='/'
-					sx={{
-						display: {
-							xs: 'none',
-							md: 'block',
-						},
-						fontSize: 24,
-						fontWeight: (theme) =>
-							theme.typography.fontWeightRegular,
-						color: (theme) => theme.palette.text.primary,
-						textDecoration: 'none',
-						mr: 2,
-					}}
-				>
-					MangaApp
-				</Typography>
+					<Typography
+						variant='h1'
+						component={NavLink}
+						to='/'
+						sx={{
+							display: {
+								xs: 'none',
+								md: 'block',
+							},
+							fontSize: 24,
+							fontWeight: (theme) =>
+								theme.typography.fontWeightRegular,
+							color: (theme) => theme.palette.text.primary,
+							textDecoration: 'none',
+							mr: 2,
+						}}
+					>
+						MangaApp
+					</Typography>
 
-				<Box
-					sx={{
-						width: 1,
-						display: 'flex',
-						justifyContent: 'flex-end',
-					}}
-				>
-					<Search
-						isSearching={isSearching}
-						setIsSearching={setIsSearching}
-						searchInputValue={searchInputValue}
-						setSearchInputValue={setSearchInputValue}
-					/>
-					<Account />
-				</Box>
-			</Toolbar>
-
+					<Box
+						sx={{
+							width: 1,
+							display: 'flex',
+							justifyContent: 'flex-end',
+						}}
+					>
+						<Search
+							isSearching={isSearching}
+							setIsSearching={setIsSearching}
+							searchInputValue={searchInputValue}
+							setSearchInputValue={setSearchInputValue}
+						/>
+						<Account />
+					</Box>
+				</Toolbar>
+			</AppBar>
 			{isSearching && searchInputValue && (
 				<SearchResults name={searchInputValue} reset={reset} />
 			)}
-		</AppBar>
+		</>
 	)
 })

@@ -1,12 +1,23 @@
 import axios from 'axios'
-import { Chapter, Manga } from 'features/manga/MangaStore'
+import { Manga } from 'features/manga/MangaStore'
 import { fakeData } from '../dev/fakeData'
+import { MangaDexApi } from 'dev/mangaDex/MangaDexApi'
 
 export class Api {
 	baseUrl = 'https://andyn_mega_manga_api.org'
 	isDevEnv = process.env.NODE_ENV === 'development' ? true : false
+	source = ''
+	mangaDexApi = new MangaDexApi()
+
+	setSource = (source: string) => {
+		this.source = source
+	}
 
 	searchManga = async (name: string): Promise<Manga[]> => {
+		if (this.source === 'mangadex') {
+			return await this.mangaDexApi.searchManga(name)
+		}
+
 		if (this.isDevEnv) return [fakeData.manga]
 
 		return await axios({
@@ -17,30 +28,39 @@ export class Api {
 	}
 
 	getManga = async (mangaId: string): Promise<Manga> => {
+		if (this.source === 'mangadex') {
+			return await this.mangaDexApi.getManga(mangaId)
+		}
+
 		if (this.isDevEnv) return fakeData.manga
 
 		return await axios({
 			method: 'GET',
-			url: `${this.baseUrl}/${mangaId}`,
+			url: this.baseUrl,
+			params: { mangaId: mangaId },
 		}).then((res) => res.data)
 	}
 
-	getChapter = async (
+	getChapterImageUrls = async (
 		mangaId: string,
 		chapterId: string
-	): Promise<Chapter> => {
+	): Promise<string[]> => {
+		if (this.source === 'mangadex') {
+			return await this.mangaDexApi.getChapterImageUrls(chapterId)
+		}
+
 		if (this.isDevEnv) {
 			const fakeChapter = fakeData.manga.chapters.find(
 				(chapter) => chapter.id === chapterId
 			)
 			if (!fakeChapter) throw new Error('Chapter not found')
-			return fakeChapter
+			return fakeChapter.imageUrls
 		}
 
 		return await axios({
 			method: 'GET',
-			url: `${this.baseUrl}/${mangaId}`,
-			params: { chapter: chapterId },
+			url: this.baseUrl,
+			params: { mangaId: mangaId, chapterId: chapterId },
 		}).then((res) => res.data)
 	}
 }

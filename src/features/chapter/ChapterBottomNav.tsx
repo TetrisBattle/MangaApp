@@ -1,19 +1,22 @@
 import { Button, MenuItem, TextField, Toolbar, Typography } from '@mui/material'
-import { useStore } from 'store/useStore'
 import { observer } from 'mobx-react-lite'
 import { useNavigate } from 'react-router-dom'
+import { useStore } from 'store/useStore'
 
 export const BottomNav = observer(() => {
 	const { appStore, mangaStore } = useStore()
 	const navigate = useNavigate()
 
+	if (!mangaStore.selectedChapter) return <></>
+
 	const moveTo = async (direction: 'prev' | 'next') => {
-		const target = (
-			Number(mangaStore.manga.id) + (direction === 'prev' ? -1 : 1)
-		).toString()
+		if (!mangaStore.selectedChapter) throw new Error('Chapter not found!')
+
+		const targetChapter =
+			mangaStore.selectedChapter?.number + (direction === 'prev' ? -1 : 1)
 
 		const chapter = mangaStore.manga.chapters.find(
-			(chapter) => chapter.id === target
+			(chapter) => chapter.number === targetChapter
 		)
 
 		if (!chapter) throw new Error('Chapter not found!')
@@ -22,8 +25,6 @@ export const BottomNav = observer(() => {
 			`/${mangaStore.source}/manga/${mangaStore.manga.id}/chapter/${chapter.id}`
 		)
 	}
-
-	if (!mangaStore.selectedChapter) return <></>
 
 	return (
 		<Toolbar
@@ -65,7 +66,7 @@ export const BottomNav = observer(() => {
 			>
 				{mangaStore.manga.chapters.map((chapter) => (
 					<MenuItem key={chapter.id} value={chapter.id}>
-						<Typography>{chapter.id}</Typography>
+						<Typography>{chapter.number}</Typography>
 					</MenuItem>
 				))}
 			</TextField>

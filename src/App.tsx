@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom'
 import { NotFound } from 'features/NotFound'
 import { SourceList } from 'features/source/SourceList'
-import { SourcePage } from 'features/source/SourcePage'
+import { SourceHomePage } from 'features/source/SourceHomePage'
 import { MangaPage } from 'features/manga/MangaPage'
 import { ChapterPage } from 'features/chapter/ChapterPage'
 import 'scrollbar.css'
@@ -12,7 +12,7 @@ const getPages = () => {
 		{ path: '/', element: <SourceList /> },
 		{
 			path: '/:source',
-			element: <SourcePage />,
+			element: <SourceHomePage />,
 		},
 		{
 			path: '/:source/manga/:mangaId',

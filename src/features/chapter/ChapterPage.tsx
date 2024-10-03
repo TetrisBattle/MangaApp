@@ -32,7 +32,7 @@ export const ChapterPage = observer(() => {
 					: undefined,
 			})
 		}
-		scrollToImage(5)
+		scrollToImage(1)
 	}, [appStore.headerHeight, imageRefs.current.length])
 
 	if (!mangaStore.manga.chapters.length) return <></>

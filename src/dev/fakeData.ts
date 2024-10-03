@@ -15,12 +15,12 @@ export const fakeData = {
 		chapters: [
 			{
 				id: '1',
-				pages: ['1', '2', '3'],
+				number: 1,
 				imageUrls: chapterImageUrls,
 			},
 			{
 				id: '2',
-				pages: ['1', '2', '3'],
+				number: 2,
 				imageUrls: chapterImageUrls,
 			},
 		],

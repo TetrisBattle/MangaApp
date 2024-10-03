@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 
 export const SearchResults = observer(
 	({ name, reset }: { name: string; reset: () => void }) => {
-		const { mangaStore } = useStore()
+		const { appStore, mangaStore } = useStore()
 		const [searchResults, setsearchResults] = useState<Manga[]>([])
 
 		useEffect(() => {
@@ -42,7 +42,7 @@ export const SearchResults = observer(
 						gap: 1,
 						zIndex: (theme) => theme.zIndex.appBar,
 						position: 'absolute',
-						left: 145,
+						left: { xs: 16, md: 145 },
 
 						maxHeight: 400,
 						flexShrink: 0,
@@ -53,7 +53,7 @@ export const SearchResults = observer(
 						<Card key={manga.id} sx={{ flexShrink: 0 }}>
 							<CardActionArea
 								component={NavLink}
-								to={`${mangaStore.source}/manga/${manga.id}`}
+								to={`/${mangaStore.source}/manga/${manga.id}`}
 								onClick={() => onMangaClick()}
 								sx={{
 									display: 'flex',
@@ -74,10 +74,7 @@ export const SearchResults = observer(
 					))}
 				</Stack>
 
-				<Backdrop
-					open={true}
-					sx={{ zIndex: (theme) => theme.zIndex.appBar - 1 }}
-				/>
+				<Backdrop open={true} sx={{ top: appStore.headerHeight }} />
 			</>
 		)
 	}

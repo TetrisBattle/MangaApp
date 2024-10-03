@@ -15,7 +15,7 @@ export type Manga = {
 
 export type Chapter = {
 	id: string
-	pages: string[]
+	number: number
 	imageUrls: string[]
 }
 
@@ -34,27 +34,22 @@ export class MangaStore {
 	}
 
 	// url params
-	source = 'dev'
 	mangaId = ''
 	chapterId = ''
+	selectedChapter: Chapter | undefined
 
 	constructor() {
 		makeAutoObservable(this)
 	}
 
-	get selectedChapter() {
-		const chapter = this.manga.chapters.find(
-			(chapter) => chapter.id === this.chapterId
-		)
-		return chapter
+	get source() {
+		return this.api.source
 	}
 
-	onLoad = async (source: string, mangaId: string, chapterId?: string) => {
-		if (process.env.NODE_ENV !== 'development') {
-			runInAction(() => {
-				this.source = source
-			})
-		}
+	onLoad = async (source: string, mangaId?: string, chapterId?: string) => {
+		this.api.setSource(source)
+
+		if (!mangaId) return
 
 		if (this.manga.id !== mangaId) {
 			const manga = await this.api.getManga(mangaId)
@@ -65,13 +60,23 @@ export class MangaStore {
 		}
 
 		if (chapterId) {
-			const chapter = await this.api.getChapter(mangaId, chapterId)
 			runInAction(() => {
 				this.chapterId = chapterId
+				this.selectedChapter = this.manga.chapters.find(
+					(chapter) => chapter.id === this.chapterId
+				)
+			})
+
+			const chapterImageUrls = await this.api.getChapterImageUrls(
+				mangaId,
+				chapterId
+			)
+
+			runInAction(() => {
 				if (!this.selectedChapter) {
 					throw new Error('Current chapter not found')
 				}
-				this.selectedChapter.imageUrls = chapter.imageUrls
+				this.selectedChapter.imageUrls = chapterImageUrls
 			})
 		}
 	}
